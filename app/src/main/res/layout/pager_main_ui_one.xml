@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:elevation="6dp"
-        tools:targetApi="lollipop"
         android:id="@+id/app_bar_linear"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:gravity="center_vertical"
-        android:background="@color/purple_500">
+        android:elevation="7dp"
+        android:background="@android:color/transparent"
+        tools:targetApi="lollipop">
         <TextView
             android:id="@+id/pager_main_one_text1"
             android:layout_marginLeft="18dp"
@@ -23,16 +22,17 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginStart="18dp" />
+
         <TextView
             android:id="@+id/pager_main_one_text2"
-            android:layout_marginLeft="18dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
             android:text="@string/app_girl"
-            android:textColor="@color/white"
-            android:textStyle="bold"
+            android:textColor="@color/white_50"
             android:textSize="16sp"
-            android:layout_marginStart="18dp" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -40,4 +40,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+</RelativeLayout>

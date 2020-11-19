@@ -1,26 +1,22 @@
-package com.pikachu.book;
+// STOPSHIP: 2020/11/19 pikachu.org.cn
+package com.pikachu.book.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
-
 import java.util.List;
-
-
-
 
 //背  in..Time   d..Time
 // c.addView(data.get(pos)); return data.get(pos)     c.remView((View)Object)
+// addOn
 
 
 
-
-public class PagerAdapter extends androidx.viewpager.widget.PagerAdapter {
+public class MainPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
 
     private final List<View> data;
 
-    public PagerAdapter(List<View> data) {
+    public MainPagerAdapter(List<View> data) {
         this.data = data;
     }
 
