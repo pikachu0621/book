@@ -6,16 +6,22 @@
     <color name="purple_700">#FF2665c3</color>
     <color name="purge_800">#FFc3269e</color>
 
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="purple_700_2">#602665c3</color>
+    <color name="purge_800_2">#60c3269e</color>
+
+    <color name="teal_200">#FF2665c3</color>
+    <color name="teal_700">#FF2665c3</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_50">#50FFFFFF</color>
+    <color name="white_70">#70FFFFFF</color>
 
 
     <color name="black_A0">#414141</color>
     <color name="black_70">#787878</color>
+    <color name="black_db">#dbdbdb</color>
+    <color name="black_50">#50000000</color>
 
 
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:id="@+id/ui_m_i_lin1">
+    <com.pikachu.book.tools.view.QMUIRadiusImageView
+        android:id="@+id/ui_m_i_image1"
+        android:scaleType="centerCrop"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        app:qmui_corner_radius="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/ui_m_i_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_A0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/app_name"
+            android:lines="1"
+            android:ellipsize="end"/>
+        <com.pikachu.book.tools.view.ScoreView
+            android:layout_marginTop="4dp"
+            android:id="@+id/ui_m_i_score"
+            android:layout_width="match_parent"
+            android:layout_height="14dp" />
+
+
+        <TextView
+            android:id="@+id/ui_m_i_text2"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/app_name"
+            android:textColor="@color/black_70"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/ui_m_i_text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="3"
+            android:text="@string/app_name"
+            android:textColor="@color/black_A0"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
