@@ -15,6 +15,7 @@
     </style>
 
 
+    <!--Theme.MaterialComponents.Light.NoActionBar-->
     <style name="Theme.Book2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -27,6 +28,17 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+
+
+
+
+    <!--Theme.MaterialComponents.Light.NoActionBar-->
+    <style name="pText" parent="Theme.Book">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#A0000000</item>
     </style>
 
 

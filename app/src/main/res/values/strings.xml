@@ -5,6 +5,18 @@
     <string name="app_one">首页</string>
     <string name="app_tow">书架</string>
     <string name="app_three">我的</string>
+    <string name="app_author">作者：pikachu</string>
+    <string name="app_info_read">有5万人读过，月热度1000</string>
+    <string name="app_settings_on">关于软件</string>
+    <string name="app_settings_more">更多设置</string>
+    <string name="app_settings_read">历史阅读</string>
+    <string name="app_settings_me_book">我的书架</string>
+    <string name="app_read_info">今日已阅读20分钟，继续加油哦！</string>
+    <string name="app_author_str">Pikachu</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_f2_book">我的书架</string>
+    <string name="app_f2_history">历史浏览</string>
 </resources>

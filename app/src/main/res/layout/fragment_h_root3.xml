@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/purple_700">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnablePureScrollMode="true"
+        app:srlEnableLoadMore="false"
+        app:srlDragRate="0.8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="70dp"
+                    app:qmui_is_circle="true"
+                    app:qmui_border_width="4dp"
+                    app:qmui_border_color="@color/white"
+                    android:src="@drawable/ic_author"/>
+
+
+                <TextView
+                    android:id="@+id/main_f3_text1"
+                    android:textColor="@android:color/white"
+                    android:text="@string/app_author_str"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <TextView  style="@style/Theme.Book"
+                    android:id="@+id/main_f3_text2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white_C0"
+                    android:textSize="14sp"
+                    android:text="@string/app_read_info"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_f3_lin1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:background="#88ffffff">
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/ic_f3_book"/>
+
+                <TextView style="@style/pText"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/app_settings_me_book"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_f3_lin2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:background="#aaffffff">
+
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/ic_f3_books"/>
+
+                <TextView   style="@style/pText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/app_settings_read" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_f3_lin3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:background="#ccffffff">
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/ic_f3_settings"/>
+
+                <TextView  style="@style/pText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/app_settings_more"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_f3_lin4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:background="#eeffffff">
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/ic_f3_appme"/>
+                <TextView   style="@style/pText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/app_settings_on"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+</FrameLayout>

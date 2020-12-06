@@ -5,18 +5,22 @@
     android:layout_height="match_parent">
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:background="@drawable/gradient_up"
-        android:layout_above="@+id/main_nar_lin"/>
+
+
 
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/main_nar_lin" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="@drawable/gradient_up"
         android:layout_above="@+id/main_nar_lin"/>
+
 
     <include layout="@layout/ui_nar" />
 

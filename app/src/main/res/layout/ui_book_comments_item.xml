@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:id="@+id/ui_book_c_lin1">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <com.pikachu.book.tools.view.QMUIRadiusImageView
+            android:scaleType="centerCrop"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            app:qmui_is_circle="true"
+            android:src="@color/purple_700"
+            android:id="@+id/ui_book_c_qmui1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="14dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/ui_book_c_text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_A0"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@string/app_name"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+
+            <TextView
+                android:id="@+id/ui_book_c_text2"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/app_name"
+                android:textColor="@color/black_70"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/ui_book_c_text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:ellipsize="end"
+        android:text="@string/app_name"
+        android:textColor="@color/black_A0"
+        android:textSize="14sp"
+        android:maxLines="10"/>
+
+    <com.pikachu.book.tools.view.QMUIRadiusImageView
+        android:id="@+id/ui_book_c_qmui2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:qmui_corner_radius="6dp"
+        android:scaleType="centerCrop"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right|center_vertical"
+        android:layout_marginTop="14dp">
+        <ImageView
+            android:src="@drawable/ic_comments"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/ui_book_c_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/app_name"
+            android:textColor="@color/black_db"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp" />
+
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_praise"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="20dp" />
+
+        <TextView
+            android:id="@+id/ui_book_c_text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/app_name"
+            android:textColor="@color/black_db"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            tools:ignore="SmallSp" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
