@@ -48,6 +48,7 @@ public class BookInfoActivity extends BaseActivity {
     private int colorW;
     private int colorW5;
     boolean isK = true;
+    private BookChapterFragment bookChapterFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class BookInfoActivity extends BaseActivity {
                 String str1 = Tools.cutStr(str, AppInfo.APP_JS_INFO_STR[0], AppInfo.APP_JS_INFO_STR[1]);
                 String host = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[2], AppInfo.APP_JS_INFO_STR[3]);
                 String token = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[4], AppInfo.APP_JS_INFO_STR[3]);
-
+                String title = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[5], AppInfo.APP_JS_INFO_STR[3]);
                 // 添加fragment
                 List<Fragment> fragments = new ArrayList<>();
                 List<String> strings = new ArrayList<>();
@@ -99,10 +100,11 @@ public class BookInfoActivity extends BaseActivity {
                         && host != null && !host.equals("")
                         && token != null && !token.equals("")) {
                     strings.add("章节");
-                    fragments.add(new BookChapterFragment(listBean, host, token,is_boy));
+                    bookChapterFragment = new BookChapterFragment(listBean, title,host, token, is_boy);
+                    fragments.add(bookChapterFragment);
                 }
                 strings.add("评论");
-                fragments.add(new BookChapterFragment(listBean,is_boy));
+                fragments.add(new BookChapterFragment(listBean,title,is_boy));
                 infoPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments, strings));
                 infoTab.setupWithViewPager(infoPager);
 
@@ -134,7 +136,20 @@ public class BookInfoActivity extends BaseActivity {
             return true;
         }
         if (item.getItemId() == R.id.menu_3) {
-            showToast("3");
+            //showToast("3");
+            if (bookChapterFragment != null && bookChapterFragment.isPositiveOrder()){
+                item.setTitle("章节列表正序");
+                bookChapterFragment.setOrder(false);
+            }else if (bookChapterFragment != null){
+                item.setTitle("章节列表到序");
+                bookChapterFragment.setOrder(true);
+            }
+
+
+            return true;
+        }
+        if (item.getItemId() == R.id.menu_4) {
+            showToast("4");
             return true;
         }
         return super.onOptionsItemSelected(item);

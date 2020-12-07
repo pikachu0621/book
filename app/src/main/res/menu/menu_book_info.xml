@@ -13,6 +13,10 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_3"
+        android:title="章节列表正序"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_4"
         android:title="分享"
         app:showAsAction="never" />
 

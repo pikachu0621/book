@@ -40,12 +40,17 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     private SmartRefreshLayout bookInfoRefreshLayout;
     private RecyclerView bookInfoRecycler;
     private BookChapterRecycler bookChapterRecycler;
-    private boolean isBoy;
+    private final boolean isBoy;
+    private int order = 0; //倒序  1正序
 
 
-    public BookChapterFragment(JsonBookItemCls.ListBean listBean, String host, String token,boolean isBoy) {
+
+    public BookChapterFragment(JsonBookItemCls.ListBean listBean,String title, String host, String token,boolean isBoy) {
         this.isBookChapter = true;
-        title = listBean.getTitle();
+        if (title==null||title.equals(""))
+            this.title = listBean.getTitle();
+        else
+            this.title = title;
         id = listBean.getId();
         author = listBean.getAuthor();
         this.host = host;
@@ -54,9 +59,12 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     }
 
 
-    public BookChapterFragment(JsonBookItemCls.ListBean listBean,boolean isBoy) {
+    public BookChapterFragment(JsonBookItemCls.ListBean listBean,String title,boolean isBoy) {
         this.isBookChapter = false;
-        title = listBean.getTitle();
+        if (title==null || title.equals(""))
+            this.title = listBean.getTitle();
+        else
+            this.title = title;
         id = listBean.getId();
         author = listBean.getAuthor();
         this.isBoy = isBoy;
@@ -103,14 +111,15 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
         String url;
         if (isBookChapter) {
             url = AppInfo.APP_API_BOOK_CH.replace(AppInfo.APP_RE_STR[1], "" + page)
-                    .replace(AppInfo.APP_RE_STR[2], title)
+                    .replace(AppInfo.APP_RE_STR[2], title)//title
                     .replace(AppInfo.APP_RE_STR[3], author)
                     .replace(AppInfo.APP_RE_STR[4], id)
                     .replace(AppInfo.APP_RE_STR[5], host)
-                    .replace(AppInfo.APP_RE_STR[6], token);
+                    .replace(AppInfo.APP_RE_STR[6], token)
+                    .replace(AppInfo.APP_RE_STR[7], ""+order);
         } else {
             url = AppInfo.APP_API_COMMENTS.replace(AppInfo.APP_RE_STR[1], "" + page)
-                    .replace(AppInfo.APP_RE_STR[2], title)
+                    .replace(AppInfo.APP_RE_STR[2], title)//title
                     .replace(AppInfo.APP_RE_STR[3], author)
                     .replace(AppInfo.APP_RE_STR[4], id);
         }
@@ -282,4 +291,21 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     }
 
 
+
+    //获取倒序或者正序
+    public boolean isPositiveOrder() {
+        return this.order == 1;
+    }
+
+    //设置倒序或者正序
+    public void setOrder(boolean isPositiveOrder) {
+        if (isBookChapter){
+            if (isPositiveOrder)
+                this.order = 1;
+            else
+                this.order = 0;
+            bookInfoRefreshLayout.autoRefresh();//自动刷新
+            load(true);
+        }
+    }
 }

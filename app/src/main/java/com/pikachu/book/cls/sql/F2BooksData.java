@@ -16,9 +16,10 @@ public class F2BooksData{
     private String apiId;//书id == {novelid}
     private String apiHost;//必要参数 == {host}
     private String apiToken;//必要参数 == {token}
+    private int appOrder;//必要参数 == {order} //0倒序 1正序
 
 
-    public F2BooksData(String knotName, String knotImageUrl, int size, String apiTitle, int apiPage, String apiAuthor, String apiId, String apiHost, String apiToken) {
+    public F2BooksData(String knotName, String knotImageUrl, int size, String apiTitle, int apiPage, String apiAuthor, String apiId, String apiHost, String apiToken, int appOrder) {
         this.knotName = knotName;
         this.knotImageUrl = knotImageUrl;
         this.size = size;
@@ -28,6 +29,7 @@ public class F2BooksData{
         this.apiId = apiId;
         this.apiHost = apiHost;
         this.apiToken = apiToken;
+        this.appOrder = appOrder;
     }
 
 
@@ -107,6 +109,14 @@ public class F2BooksData{
         this.apiToken = apiToken;
     }
 
+    public int getAppOrder() {
+        return appOrder;
+    }
+
+    public void setAppOrder(int appOrder) {
+        this.appOrder = appOrder;
+    }
+
 
 
 
@@ -129,7 +139,8 @@ public class F2BooksData{
                 .replace(AppInfo.APP_RE_STR[3], apiAuthor)
                 .replace(AppInfo.APP_RE_STR[4], apiId)
                 .replace(AppInfo.APP_RE_STR[5], apiHost)
-                .replace(AppInfo.APP_RE_STR[6], apiToken);
+                .replace(AppInfo.APP_RE_STR[6], apiToken)
+                .replace(AppInfo.APP_RE_STR[7], ""+appOrder);
     }
 
     // 返回 章节列表url
@@ -139,7 +150,8 @@ public class F2BooksData{
                 .replace(AppInfo.APP_RE_STR[3], apiAuthor)
                 .replace(AppInfo.APP_RE_STR[4], apiId)
                 .replace(AppInfo.APP_RE_STR[5], apiHost)
-                .replace(AppInfo.APP_RE_STR[6], apiToken);
+                .replace(AppInfo.APP_RE_STR[6], apiToken)
+                .replace(AppInfo.APP_RE_STR[7], ""+appOrder);
     }
 
 

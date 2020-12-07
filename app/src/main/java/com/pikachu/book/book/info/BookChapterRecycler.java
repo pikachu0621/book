@@ -31,16 +31,13 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<JsonBookChapterCls.DataBean.ChaptersBean> list2;
 
 
-    public interface OnClickItemCHListener{
+    public interface OnClickItemCHListener {
         void onClick(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean);
     }
 
-    public interface OnClickItemCListener{
+    public interface OnClickItemCListener {
         void onClick(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean);
     }
-
-
-
 
 
     //章节
@@ -61,7 +58,6 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
     public void addList(List<JsonBookCommentsCls.DataBean.ListBean> list) {
         if (this.list == null)
             this.list = new ArrayList<>();
@@ -71,15 +67,15 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
     public void addList2(List<JsonBookChapterCls.DataBean.ChaptersBean> list) {
         if (this.list2 == null)
             this.list2 = new ArrayList<>();
+
         this.list2.addAll(list);
     }
-
 
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (isChapter){
+        if (isChapter) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ui_book_chapter_item, parent, false));
         }
         return new ViewHolder2(LayoutInflater.from(parent.getContext()).inflate(R.layout.ui_book_comments_item, parent, false));
@@ -89,25 +85,25 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 
-        if (isChapter){
+        if (isChapter) {
             ViewHolder holder2 = (ViewHolder) holder;
             JsonBookChapterCls.DataBean.ChaptersBean chaptersBean = list2.get(position);
-            holder2.uiBookChLin1.setOnClickListener(v -> onClickItemCHListener.onClick(v,position,chaptersBean));
+            holder2.uiBookChLin1.setOnClickListener(v -> onClickItemCHListener.onClick(v, position, chaptersBean));
             holder2.uiBookChText1.setText(chaptersBean.getName());
-        }else {
+        } else {
             ViewHolder2 holder1 = (ViewHolder2) holder;
             JsonBookCommentsCls.DataBean.ListBean listBean = list.get(position);
-            holder1.uiBookCLin1.setOnClickListener(v -> onClickItemCListener.onClick(v,position,listBean));
+            holder1.uiBookCLin1.setOnClickListener(v -> onClickItemCListener.onClick(v, position, listBean));
             Glide.with(context).load(listBean.getAvatar()).into(holder1.uiBookCQmui1);//用户头像
             holder1.uiBookCText1.setText(listBean.getSm_name());//用户名
             holder1.uiBookCText2.setText(listBean.getPub_time());//评论时间
             holder1.uiBookCText3.setText(Html.fromHtml(listBean.getText()));//内容
             holder1.uiBookCText4.setText(listBean.getReplynum());//评论数
             holder1.uiBookCText5.setText(listBean.getZan());//赞
-            if (listBean.getPics().size()>0){
+            if (listBean.getPics().size() > 0) {
                 holder1.uiBookCQmui2.setVisibility(View.VISIBLE);
                 Glide.with(context).load(listBean.getPics().get(0)).into(holder1.uiBookCQmui2);//评论的图片
-            }else {
+            } else {
                 holder1.uiBookCQmui2.setVisibility(View.GONE);
             }
 
@@ -122,7 +118,6 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
             return list2.size();
         return list.size();
     }
-
 
 
     //章节
@@ -143,7 +138,7 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class ViewHolder2 extends RecyclerView.ViewHolder {
 
         public LinearLayout uiBookCLin1;
-        public QMUIRadiusImageView uiBookCQmui1,uiBookCQmui2;
+        public QMUIRadiusImageView uiBookCQmui1, uiBookCQmui2;
         public TextView uiBookCText1;
         public TextView uiBookCText2;
         public TextView uiBookCText3;
