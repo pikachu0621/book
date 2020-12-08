@@ -12,61 +12,44 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.pikachu.book.R;
-import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.home.fragment.one.OneRootFragment;
 import com.pikachu.book.home.fragment.three.ThreeRootFragment;
 import com.pikachu.book.home.fragment.tow.TowRootFragment;
+import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.tools.state.PKStatusBarActivity;
 import com.pikachu.book.tools.state.PKStatusBarTools;
-
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.BindViews;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 @SuppressLint("NonConstantResourceId")
 public class MainActivity extends PKStatusBarActivity {
 
-
-    @BindView(R.id.main_pager)
-    ViewPager mainPager;
-    @BindView(R.id.main_nar_one)
-    LinearLayout mainNarOne;
-    @BindView(R.id.main_nar_tow)
-    LinearLayout mainNarTow;
-    @BindView(R.id.main_nar_three)
-    LinearLayout mainNarThree;
-
-    @BindViews({R.id.main_nar_text1, R.id.main_nar_text2, R.id.main_nar_text3})
-    TextView[] id_text;
-    @BindViews({R.id.main_nar_image1, R.id.main_nar_image2, R.id.main_nar_image3})
-    ImageView[] id_image;
+    private ViewPager mainPager;
+    private TextView[] id_text;
+    private ImageView[] id_image;
 
     int[] drawable = {R.drawable.ic_main_one, R.drawable.ic_main_tow, R.drawable.ic_main_three};
     int[] drawable2 = {R.drawable.ic_main_one_1, R.drawable.ic_main_tow_1, R.drawable.ic_main_three_1};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        init();
         PKStatusBarTools.with(this).noToNON().init();
+        initView();
+        init();
     }
-
 
     private void init() {
         addPager();
     }
 
-
     /**
      * 添加_主分页
      */
     private void addPager() {
-
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new OneRootFragment());
         fragments.add(new TowRootFragment());
@@ -74,8 +57,10 @@ public class MainActivity extends PKStatusBarActivity {
         mainPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments));
         mainPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int positionUp = 0;
+
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -101,24 +86,19 @@ public class MainActivity extends PKStatusBarActivity {
         mainPager.setOffscreenPageLimit(3);
     }
 
+    private void initView() {
+        mainPager = findViewById(R.id.main_pager);
 
-    /**
-     * 底部导航栏 点击事件
-     *
-     * @param view
-     */
-    @OnClick({R.id.main_nar_one, R.id.main_nar_tow, R.id.main_nar_three})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.main_nar_one:
-                mainPager.setCurrentItem(0);
-                break;
-            case R.id.main_nar_tow:
-                mainPager.setCurrentItem(1);
-                break;
-            case R.id.main_nar_three:
-                mainPager.setCurrentItem(2);
-                break;
-        }
+        id_text = new TextView[]{findViewById(R.id.main_nar_text1),
+                findViewById(R.id.main_nar_text2),
+                findViewById(R.id.main_nar_text3)};
+        id_image = new ImageView[]{findViewById(R.id.main_nar_image1),
+                findViewById(R.id.main_nar_image2),
+                findViewById(R.id.main_nar_image3)};
+
+        //底部导航栏 点击事件
+        findViewById(R.id.main_nar_one).setOnClickListener(v -> mainPager.setCurrentItem(0));
+        findViewById(R.id.main_nar_tow).setOnClickListener(v -> mainPager.setCurrentItem(1));
+        findViewById(R.id.main_nar_three).setOnClickListener(v -> mainPager.setCurrentItem(2));
     }
 }
