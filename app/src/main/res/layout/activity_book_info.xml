@@ -25,19 +25,37 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-            <com.pikachu.book.tools.view.QMUIRadiusImageView
-                android:id="@+id/info_image1"
+            <RelativeLayout
                 android:layout_width="120dp"
                 android:layout_height="160dp"
+                android:id="@+id/info_relative"
                 android:layout_below="@id/info_toolbar"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:src="@color/white"
-                app:qmui_corner_radius="6dp" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true">
+
+                <com.pikachu.book.tools.view.QMUIRadiusImageView
+                    android:id="@+id/info_image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/white"
+                    app:qmui_corner_radius="6dp" />
+                <TextView
+                    android:id="@+id/info_text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:background="@drawable/ic_book_start_bg"
+                    android:text="@string/app_start_read"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,8 +67,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_toStartOf="@id/info_image1"
-                android:layout_toLeftOf="@id/info_image1"
+                android:layout_toStartOf="@id/info_relative"
+                android:layout_toLeftOf="@id/info_relative"
                 android:orientation="vertical">
 
 

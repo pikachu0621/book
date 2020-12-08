@@ -138,8 +138,8 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
 
         //序列化对象传递
         Intent intent = new Intent(activity, BookInfoActivity.class);
-        intent.putExtra("BOOK_OBJECT",listBean);
-        intent.putExtra("IS_BOY",isBoy);
+        intent.putExtra(AppInfo.APP_SA_BOOK_INFO,listBean);
+        intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
         startActivity(intent);
 
     }

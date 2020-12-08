@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.pikachu.book.R;
 import com.pikachu.book.home.fragment.one.fragment.fragment.TabFragment;
 import com.pikachu.book.tools.base.BaseActivity;
+import com.pikachu.book.tools.untli.AppInfo;
 import com.pikachu.book.tools.untli.Tools;
 
 public class SearchActivity extends BaseActivity {
@@ -32,7 +33,7 @@ public class SearchActivity extends BaseActivity {
 
 
         //获取是否男生
-        is_boy = getIntent().getBooleanExtra("IS_BOY", true);
+        is_boy = getIntent().getBooleanExtra(AppInfo.APP_SA_IS_BOY, true);
 
         int mActionBarOptions = getSupportActionBar().getDisplayOptions();
         // 设置DisplayOptions，显示ActionBar自定义的View

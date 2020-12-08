@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.pikachu.book.R;
 import com.pikachu.book.book.info.comments.CommentsInfoActivity;
+import com.pikachu.book.book.info.look.LookBookActivity;
 import com.pikachu.book.cls.json.JsonBookChapterCls;
 import com.pikachu.book.cls.json.JsonBookCommentsCls;
 import com.pikachu.book.cls.json.JsonBookItemCls;
@@ -272,6 +273,16 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     @Override
     public void onClick(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean) {
         Tools.showToast(activity,"ID--->"+listBean.getId()+"\nNAME"+listBean.getName()+"\nURL--->"+listBean.getUrl());
+
+        Log.i("test_t",listBean.getUrl());
+
+        Intent intent = new Intent(activity, LookBookActivity.class);
+        intent.putExtra("URL",listBean.getUrl());
+        intent.putExtra("HOST",host);
+        intent.putExtra("NAME",listBean.getName());
+        startActivity(intent);
+
+
     }
 
 
@@ -279,8 +290,8 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     @Override
     public void onClick(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
         Intent intent = new Intent(activity, CommentsInfoActivity.class);
-        intent.putExtra("USER_INFO",listBean);
-        intent.putExtra("IS_BOY",isBoy);
+        intent.putExtra(AppInfo.APP_SA_USER_INFO,listBean);
+        intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
         startActivity(intent);
     }
 

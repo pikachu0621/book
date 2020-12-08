@@ -17,7 +17,10 @@ public class AppInfo {
 
 
     /////// 界面跳转 ////
-
+    public static final String APP_SA_IS_BOY = "IS_BOY"; // 是否男 用于改变样式
+    public static final String APP_SA_USER_INFO = "USER_INFO"; //用于评论详情
+    public static final String APP_SA_BOOK_INFO = "BOOK_INFO"; //用于小说的详情
+    public static final String APP_SA_BOOK_SQL_INFO = "BOOK_SQL_INFO"; //用于小说的SQL储存数据
 
 
 
@@ -39,9 +42,11 @@ public class AppInfo {
     public static final String[] APP_JS_INFO_STR = {"introUrl\":\""/*0*/,"\""/*1*/,"&host="/*2*/,"&"/*3*/,"&token="/*4*/,"&title="/*5*/};
 
     //章节列表
-    public static final String APP_API_BOOK_CH = "https://quark.sm.cn/api/rest?format=json&order={order}&callback=jsonp{page}&method=novelintro.menu&q={title}&author={author}&novelid={novelid}&host={host}&token={token}&page={page}";
+    public static final String APP_API_BOOK_CH = "https://m.sm.cn/api/rest?format=json&order={order}&callback=jsonp{page}&method=novelintro.menu&q={title}&author={author}&novelid={novelid}&host={host}&token={token}&page={page}";
     //https://quark.sm.cn/api/rest?
     //https://m.sm.cn/api/rest?
+
+
 
 
 

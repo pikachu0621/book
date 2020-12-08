@@ -2,13 +2,14 @@ package com.pikachu.book.cls.sql;
 
 import com.pikachu.book.tools.untli.AppInfo;
 
-public class F2BooksData{
+import java.io.Serializable;
+
+public class F2BooksData implements Serializable {
 
     //创建数据库储存
-
-
     private String knotName;//章节名
     private String knotImageUrl;//图片url
+    private String knotConnectUrl;//书内容url
     private int size; //用于保存当前章节在  这本书的API第几个
     private String apiTitle;//书名  == {title}
     private int apiPage; //用于保存当前章节在  这本书的API第页 == {page}
@@ -19,9 +20,10 @@ public class F2BooksData{
     private int appOrder;//必要参数 == {order} //0倒序 1正序
 
 
-    public F2BooksData(String knotName, String knotImageUrl, int size, String apiTitle, int apiPage, String apiAuthor, String apiId, String apiHost, String apiToken, int appOrder) {
+    public F2BooksData(String knotName, String knotImageUrl, String knotConnectUrl, int size, String apiTitle, int apiPage, String apiAuthor, String apiId, String apiHost, String apiToken, int appOrder) {
         this.knotName = knotName;
         this.knotImageUrl = knotImageUrl;
+        this.knotConnectUrl = knotConnectUrl;
         this.size = size;
         this.apiTitle = apiTitle;
         this.apiPage = apiPage;
@@ -35,6 +37,10 @@ public class F2BooksData{
 
 
 
+    public F2BooksData(){}
+
+
+
 
     public String getKnotImageUrl() {
         return knotImageUrl;
@@ -44,6 +50,13 @@ public class F2BooksData{
         this.knotImageUrl = knotImageUrl;
     }
 
+    public String getKnotConnectUrl() {
+        return knotConnectUrl;
+    }
+
+    public void setKnotConnectUrl(String knotConnectUrl) {
+        this.knotConnectUrl = knotConnectUrl;
+    }
 
     public String getApiTitle() {
         return apiTitle;

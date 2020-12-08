@@ -1,8 +1,11 @@
 package com.pikachu.book.tools.url;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Build;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,22 +16,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class LoadUrl {
 
 
     private String url;
     private int type;
-    private OnCall onCall = new OnCall() {
-        @Override
-        public void error(Exception e) { }
-        @Override
-        public void finish(String str) { }
-    };
+    private OnCall onCall;
     private int connectTime = 5000;
     private int readTime = 5000;
     private String postStr;
+    private String charset = "UTF-8";
 
 
     @IntDef(value = {Type.GET, Type.POST})
@@ -46,6 +50,7 @@ public class LoadUrl {
     private Activity activity;
 
 
+    //get utf-8
     public LoadUrl(Activity activity,String url,OnCall onCall){
         this.activity = activity;
         this.url = url;
@@ -54,14 +59,32 @@ public class LoadUrl {
         start();
     }
 
-    public LoadUrl(Activity activity,String url,String postStr,OnCall onCall){
+    //get utf-8
+    public LoadUrl(Activity activity,String url,String charset,OnCall onCall){
+        this.activity = activity;
+        this.url = url;
+        this.charset = charset==null||charset.equals("")?"UTF-8":charset;
+        type = Type.GET;
+        this.onCall = onCall;
+        start();
+    }
+
+
+
+    //post charset
+    public LoadUrl(Activity activity,String url,String postStr,String charset,OnCall onCall){
         this.activity = activity;
         this.url = url;
         this.postStr = postStr;
+        this.charset = charset;
+        this.onCall = onCall;
         type = Type.POST;
         start();
     }
 
+
+
+    @SuppressLint("NewApi")
     private void start(){
         new Thread(() -> {
             try {
@@ -72,6 +95,7 @@ public class LoadUrl {
 
                 http.setRequestProperty("accept", " */*");
                 http.setRequestProperty("accept-encoding", "gzip, deflate, br");
+                http.setRequestProperty("Charset", "UTF-8");
                 http.setRequestProperty("accept-language", "zh-CN,zh;q=0.9");
                 http.setRequestProperty("cookie", " sm_uuid=1de5bdce386b1f28fe8b348f4bc4cb91%7C%7C%7C1605455203; " +
                         "sm_diu=1de5bdce386b1f28fe8b348f4bc4cb91%7C%7C13ecf3ec4ca25e70e7%7C1605455203;" +
@@ -90,12 +114,21 @@ public class LoadUrl {
 
                 int responseCode = http.getResponseCode();
                 if (responseCode==200){
+
+                    Pattern pattern = Pattern.compile("charset=\\S*");
+                    Matcher matcher = pattern.matcher(http.getContentType());
+                    if (matcher.find()) {
+                        charset = matcher.group().replace("charset=", "");
+                    }
+
                     InputStream inputStream = http.getInputStream();
                     BufferedReader bufferedReader;
                     if (http.getContentEncoding().equals("gzip"))
-                        bufferedReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream)));
+                        bufferedReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
                     else
-                        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                        bufferedReader = new BufferedReader(new InputStreamReader(inputStream, charset));
+
+
                     StringBuffer stringBuffer = new StringBuffer();
                     String str;
                     while ((str = bufferedReader.readLine()) != null){

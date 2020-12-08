@@ -75,7 +75,7 @@ public class OneRootFragment extends Fragment {
         text3.setOnClickListener(v -> {
 
             Intent intent = new Intent(activity, SearchActivity.class);
-            intent.putExtra("IS_BOY",isBoy);
+            intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
             startActivity(intent);
         });
 
@@ -100,6 +100,7 @@ public class OneRootFragment extends Fragment {
                 fragments.add(new BoyAndGirlFragment(jsonTabCls.getGirl(),false)); // 女
 
                 //添加适配器
+                assert getFragmentManager() != null;
                 pager.setAdapter(new PagerAdapter(getFragmentManager(),fragments));
                 pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
