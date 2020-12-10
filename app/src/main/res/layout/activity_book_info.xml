@@ -42,7 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@color/white"
-                    app:qmui_corner_radius="6dp" />
+                    app:qmui_corner_radius="6dp"
+                    android:transitionName="ui_m_item_tr"/>
                 <TextView
                     android:id="@+id/info_text4"
                     android:layout_width="match_parent"

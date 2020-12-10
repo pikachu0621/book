@@ -8,7 +8,7 @@
         android:id="@+id/ui_book_ch_text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black_A0"
+        android:textColor="@color/black_title"
         android:textSize="16sp"
         android:textStyle="bold"
         android:text="@string/app_name"

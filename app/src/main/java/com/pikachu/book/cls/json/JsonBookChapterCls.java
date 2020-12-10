@@ -76,7 +76,7 @@ public class JsonBookChapterCls {
         private String total;
         private List<ChaptersBean> chapters;
 
-        public static class ChaptersBean {
+        public static class ChaptersBean{
             public String getId() {
                 return id;
             }

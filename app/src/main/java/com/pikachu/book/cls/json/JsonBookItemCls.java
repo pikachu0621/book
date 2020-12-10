@@ -1,5 +1,8 @@
 package com.pikachu.book.cls.json;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -187,5 +190,28 @@ public class JsonBookItemCls {
         private String mark_score;
         private String monthuv;
         private String readuv;
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        @Expose(serialize = false,deserialize = false)
+        private String host;
+        @Expose(serialize = false,deserialize = false)
+        private String token;
+
+
     }
 }

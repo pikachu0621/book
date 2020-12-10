@@ -84,9 +84,11 @@ public class F2BooksFragment extends BaseFragment {
             //模拟加载数据
             ArrayList<F2BooksData> f2BooksData = new ArrayList<>();
             for (int i = 0;i<(isBooks?20:50);i++){
-                f2BooksData.add(new F2BooksData("第一章 蟒雀吞龙",
-                        "https://ims-cdn0.sm.cn/ims?kt=url&at=novel&key=aHR0cHM6Ly9ndy5hbGljZG4uY29tL0wxLzcyMy8xNTA1Mjk1MzA3LzQ4LzVjLzUwLzQ4NWM1MGZhYmY0YzEzNmY5ZGRkYzMwOWUxMjJlZmUzLmpwZw==&sign=yx:mhfWIS-vhd_C2wcePuiowWM5WOA=&tv=320_320&x.jpg",
-                        null,0,"元尊-"+i,0,null,null,null,null,0));
+                F2BooksData f2BooksData1 = new F2BooksData();
+                f2BooksData1.setKnotName("第一章 蟒雀吞龙");
+                f2BooksData1.setKnotImageUrl("https://ims-cdn0.sm.cn/ims?kt=url&at=novel&key=aHR0cHM6Ly9ndy5hbGljZG4uY29tL0wxLzcyMy8xNTA1Mjk1MzA3LzQ4LzVjLzUwLzQ4NWM1MGZhYmY0YzEzNmY5ZGRkYzMwOWUxMjJlZmUzLmpwZw==&sign=yx:mhfWIS-vhd_C2wcePuiowWM5WOA=&tv=320_320&x.jpg");
+                f2BooksData1.setApiTitle("元尊-"+i);
+                f2BooksData.add(f2BooksData1);
             }
 
 

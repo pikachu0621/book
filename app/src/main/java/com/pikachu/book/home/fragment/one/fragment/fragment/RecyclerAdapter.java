@@ -85,9 +85,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
-        holder.lin1.setOnClickListener(v -> {
-            onClickItemListener.onClick(v,position,listBean);
-        });
+        holder.lin1.setOnClickListener(v -> onClickItemListener.onClick(holder.uiMIImage1,position,listBean));
 
 
     }

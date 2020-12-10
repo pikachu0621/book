@@ -158,5 +158,7 @@ public class BookChapterRecycler extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-
+    public List<JsonBookChapterCls.DataBean.ChaptersBean> getList2() {
+        return list2;
+    }
 }

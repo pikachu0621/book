@@ -1,6 +1,9 @@
 package com.pikachu.book.book.info;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,57 +21,75 @@ import com.pikachu.book.book.info.look.LookBookActivity;
 import com.pikachu.book.cls.json.JsonBookChapterCls;
 import com.pikachu.book.cls.json.JsonBookCommentsCls;
 import com.pikachu.book.cls.json.JsonBookItemCls;
+import com.pikachu.book.cls.sql.F2BooksData;
 import com.pikachu.book.tools.base.BaseFragment;
 import com.pikachu.book.tools.untli.AppInfo;
+import com.pikachu.book.tools.untli.BookHost;
 import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
+import java.util.List;
+
 
 public class BookChapterFragment extends BaseFragment implements BookChapterRecycler.OnClickItemCHListener, BookChapterRecycler.OnClickItemCListener {
 
-    private final boolean isBookChapter;
-    private String host;
-    private String token;
+    private boolean isBookChapter;
     private View inflate;
     private FragmentActivity activity;
-    private int page;
-    private final String title;
-    private final String id;
-    private final String author;
     private SmartRefreshLayout bookInfoRefreshLayout;
     private RecyclerView bookInfoRecycler;
     private BookChapterRecycler bookChapterRecycler;
-    private final boolean isBoy;
-    private int order = 0; //倒序  1正序
+    private OnClickFragment onClickFragment;
 
+    private String title;
+    private String author;
+    private String id;
+    private String host;
+    private String token;
+    private int order, size, page;//倒序  1正序
+    private boolean isOne = true;
 
-
-    public BookChapterFragment(JsonBookItemCls.ListBean listBean,String title, String host, String token,boolean isBoy) {
-        this.isBookChapter = true;
-        if (title==null||title.equals(""))
-            this.title = listBean.getTitle();
-        else
-            this.title = title;
-        id = listBean.getId();
-        author = listBean.getAuthor();
-        this.host = host;
-        this.token = token;
-        this.isBoy = isBoy;
+    public BookChapterFragment(JsonBookItemCls.ListBean listBean, boolean isBookChapter, OnClickFragment onClickFragment) {
+        /* this.listBean = listBean;*/
+        initVar(listBean.getTitle(), listBean.getAuthor(), listBean.getId(), listBean.getHost(), listBean.getToken(),
+                0, 0, 0
+                , onClickFragment, isBookChapter);
     }
 
 
-    public BookChapterFragment(JsonBookItemCls.ListBean listBean,String title,boolean isBoy) {
-        this.isBookChapter = false;
-        if (title==null || title.equals(""))
-            this.title = listBean.getTitle();
-        else
-            this.title = title;
-        id = listBean.getId();
-        author = listBean.getAuthor();
-        this.isBoy = isBoy;
+    public BookChapterFragment(F2BooksData f2BooksData, boolean isBookChapter, OnClickFragment onClickFragment) {
+        initVar(f2BooksData.getApiTitle(), f2BooksData.getApiAuthor(), f2BooksData.getApiId(), f2BooksData.getApiHost(), f2BooksData.getApiToken(),
+                f2BooksData.getApiOrder(), f2BooksData.getSize(), f2BooksData.getApiPage(),
+                onClickFragment, isBookChapter);
+
+
+    }
+
+    private void initVar(String title, String author, String id, String host, String token,
+                         int order, int size, int page,
+                         OnClickFragment onClickFragment, boolean isBookChapter) {
+        this.title = title;
+        this.author = author;
+        this.id = id;
+        this.host = host;
+        this.token = token;
+        this.order = order;
+        this.size = size;
+        this.page = page;
+        this.onClickFragment = onClickFragment;
+        this.isBookChapter = isBookChapter;
+    }
+
+
+    public interface OnClickFragment {
+        //章节点击
+        void onClickChapter(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean);
+
+        //评论item点击
+        void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean);
     }
 
 
@@ -80,6 +101,7 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
         init();
         return inflate;
     }
+
 
     private void init() {
         bookInfoRefreshLayout.setRefreshHeader(new ClassicsHeader(activity));
@@ -103,9 +125,13 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     private void load(boolean isUpData) {
 
         if (isUpData)
-            if (isBookChapter)
-                page = 0;
-            else
+            if (isBookChapter) {
+                if (isOne) {
+                    isOne = false;
+                } else {
+                    page = 0;
+                }
+            } else
                 page = 1;
         else page++;
 
@@ -117,7 +143,7 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
                     .replace(AppInfo.APP_RE_STR[4], id)
                     .replace(AppInfo.APP_RE_STR[5], host)
                     .replace(AppInfo.APP_RE_STR[6], token)
-                    .replace(AppInfo.APP_RE_STR[7], ""+order);
+                    .replace(AppInfo.APP_RE_STR[7], "" + order);
         } else {
             url = AppInfo.APP_API_COMMENTS.replace(AppInfo.APP_RE_STR[1], "" + page)
                     .replace(AppInfo.APP_RE_STR[2], title)//title
@@ -129,8 +155,7 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
         new LoadUrl(activity, url, new LoadUrl.OnCall() {
 
 
-
-            public void dd( boolean is){
+            public void dd(boolean is) {
                 if (is)
                     bookInfoRefreshLayout.finishRefresh(false);//结束刷新（刷新失败）
                 else {
@@ -150,13 +175,12 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
 
                 //加载成功后 截取需要的字符串
                 String str1 = Tools.cutStr(str, "jsonp" + page + "(", ");");
-                Log.i("test_t",str1);
+                Log.i("test_t", str1);
 
 
-
-                if (str1 == null || str1.equals("")) {
-                   dd(isUpData);
-                   return;
+                if (str1.equals("")) {
+                    dd(isUpData);
+                    return;
                 }
                 int listDataSize = -1;
                 JsonBookChapterCls jsonBookChapterCls = null;
@@ -164,17 +188,17 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
 
                 if (isBookChapter) {
                     //扑获异常时的 json 串
-                    if (!str1.contains("error\":1")){
+                    if (!str1.contains("error\":1")) {
                         jsonBookChapterCls = new Gson().fromJson(str1, JsonBookChapterCls.class);
-                        if (jsonBookChapterCls==null){
+                        if (jsonBookChapterCls == null) {
                             dd(isUpData);
                             return;
                         }
                         listDataSize = jsonBookChapterCls.getData().getChapters().size();
-                    }else {
-                        if (page> 0 && !isUpData){ //可能没有数据也会提示 error = 1 所以这里做个判断
+                    } else {
+                        if (page > 0 && !isUpData) { //可能没有数据也会提示 error = 1 所以这里做个判断
                             bookInfoRefreshLayout.finishLoadMoreWithNoMoreData();
-                        }else {
+                        } else {
                             dd(isUpData);
                         }
 
@@ -184,16 +208,16 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
 
                     if (str1.contains("error\":\"\"")) {
                         jsonBookCommentsCls = new Gson().fromJson(str1, JsonBookCommentsCls.class);
-                        if (jsonBookCommentsCls==null){
+                        if (jsonBookCommentsCls == null) {
                             dd(isUpData);
                             return;
                         }
                         listDataSize = jsonBookCommentsCls.getData().getList().size();
-                    }else {
+                    } else {
 
-                        if (page> 1 && !isUpData){//可能没有数据也会提示 error = 1 所以这里做个判断
+                        if (page > 1 && !isUpData) {//可能没有数据也会提示 error = 1 所以这里做个判断
                             bookInfoRefreshLayout.finishLoadMoreWithNoMoreData();
-                        }else {
+                        } else {
                             dd(isUpData);
                         }
                       /*  Tools.showToast(activity,"评论json串异常,请尝试重试");
@@ -245,6 +269,7 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
         }
 
     }
+
     //评论
     private void comments(boolean isUpData, JsonBookCommentsCls jsonBookCommentsCls) {
 
@@ -260,47 +285,32 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     }
 
 
-
     private void initView() {
         bookInfoRefreshLayout = inflate.findViewById(R.id.book_info_refreshLayout);
         bookInfoRecycler = inflate.findViewById(R.id.book_info_recycler);
     }
 
 
-
-
     //章节列表点击
     @Override
     public void onClick(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean) {
-        Tools.showToast(activity,"ID--->"+listBean.getId()+"\nNAME"+listBean.getName()+"\nURL--->"+listBean.getUrl());
-
-        Log.i("test_t",listBean.getUrl());
-
-        Intent intent = new Intent(activity, LookBookActivity.class);
-        intent.putExtra("URL",listBean.getUrl());
-        intent.putExtra("HOST",host);
-        intent.putExtra("NAME",listBean.getName());
-        startActivity(intent);
-
-
+        if (onClickFragment != null)
+            onClickFragment.onClickChapter(v, position, listBean);
     }
 
 
     //评论列表点击
     @Override
     public void onClick(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
-        Intent intent = new Intent(activity, CommentsInfoActivity.class);
-        intent.putExtra(AppInfo.APP_SA_USER_INFO,listBean);
-        intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
-        startActivity(intent);
-    }
+        if (onClickFragment != null)
+            onClickFragment.onClickComment(v, position, listBean);
 
+    }
 
 
     @Override
     protected void onInvisible() {
     }
-
 
 
     //获取倒序或者正序
@@ -310,7 +320,7 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
 
     //设置倒序或者正序
     public void setOrder(boolean isPositiveOrder) {
-        if (isBookChapter){
+        if (isBookChapter) {
             if (isPositiveOrder)
                 this.order = 1;
             else
@@ -319,4 +329,17 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
             load(true);
         }
     }
+
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+
+    public List<JsonBookChapterCls.DataBean.ChaptersBean> getList2() {
+        if (bookInfoRecycler != null)
+            return bookChapterRecycler.getList2();
+        return null;
+    }
+
 }

@@ -1,11 +1,16 @@
 package com.pikachu.book.book.info;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,12 +25,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.pikachu.book.R;
+import com.pikachu.book.book.info.comments.CommentsInfoActivity;
 import com.pikachu.book.book.info.look.LookBookActivity;
+import com.pikachu.book.cls.json.JsonBookChapterCls;
+import com.pikachu.book.cls.json.JsonBookCommentsCls;
 import com.pikachu.book.cls.json.JsonBookItemCls;
 import com.pikachu.book.cls.sql.F2BooksData;
 import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.tools.base.BaseActivity;
 import com.pikachu.book.tools.untli.AppInfo;
+import com.pikachu.book.tools.untli.BookHost;
 import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 import com.pikachu.book.tools.view.ScoreView;
@@ -33,7 +42,7 @@ import com.pikachu.book.tools.view.ScoreView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookInfoActivity extends BaseActivity {
+public class BookInfoActivity extends BaseActivity implements BookChapterFragment.OnClickFragment {
 
 
     private AppBarLayout infoAppbar;
@@ -54,6 +63,7 @@ public class BookInfoActivity extends BaseActivity {
     private BookChapterFragment bookChapterFragment;
     private F2BooksData f2BooksData;
     private Intent intent;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,10 +176,19 @@ public class BookInfoActivity extends BaseActivity {
 
             @Override
             public void finish(String str) {
+
                 String str1 = Tools.cutStr(str, AppInfo.APP_JS_INFO_STR[0], AppInfo.APP_JS_INFO_STR[1]);
+
                 String host = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[2], AppInfo.APP_JS_INFO_STR[3]);
                 String token = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[4], AppInfo.APP_JS_INFO_STR[3]);
                 String title = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[5], AppInfo.APP_JS_INFO_STR[3]);
+                String id = Tools.cutStr(str1, AppInfo.APP_JS_INFO_STR[6], AppInfo.APP_JS_INFO_STR[3]);
+                listBean.setId(Tools.toStringHex2(id));
+                listBean.setTitle(Tools.toStringHex2(title));
+                listBean.setHost(host);
+                listBean.setToken(token);
+
+
                 // 添加fragment
                 List<Fragment> fragments = new ArrayList<>();
                 List<String> strings = new ArrayList<>();
@@ -177,17 +196,24 @@ public class BookInfoActivity extends BaseActivity {
                         && host != null && !host.equals("")
                         && token != null && !token.equals("")) {
                     strings.add("章节");
-                    bookChapterFragment = new BookChapterFragment(listBean, title, host, token, is_boy);
+                    bookChapterFragment = new BookChapterFragment(listBean,true,BookInfoActivity.this);
                     fragments.add(bookChapterFragment);
                 }
                 strings.add("评论");
-                fragments.add(new BookChapterFragment(listBean, title, is_boy));
+                fragments.add(new BookChapterFragment(listBean,false,BookInfoActivity.this ));
                 infoPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments, strings));
                 infoTab.setupWithViewPager(infoPager);
 
             }
         });
     }
+
+
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -245,8 +271,83 @@ public class BookInfoActivity extends BaseActivity {
         intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,f2BooksData);
         startActivity(intent);
 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onClickChapter(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean) {
+
+        Tools.showToast(this,"ID--->"+ listBean.getId()+"\nNAME"+ listBean.getName()+"\nURL--->"+ listBean.getUrl()+"\nIsHost--->"+ BookHost.isHost(this.listBean.getHost()));
+        Log.i("test_t", listBean.getUrl());
+        if (!BookHost.isHost(this.listBean.getHost())) {
+
+            if (builder != null) builder.create();
+            builder = new AlertDialog.Builder(this)
+                    .setTitle("Host无收录")
+                    .setMessage("目前没有收录此Host可能无法解析，或者无法观看，您可以跳转浏览器阅读。给你带来的不便敬请谅解，我们会尽快收录")
+                    .setNegativeButton("尝试解析", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //尝试解析
+                        }
+                    })
+                    .setPositiveButton("浏览器阅读", (dialog, which) -> {
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        intent.setData(Uri.parse(listBean.getUrl()));
+                        startActivity(intent);
+                    });
+            builder.show();
+        }else {
+            Intent intent = new Intent(this, LookBookActivity.class);
+            //intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,)//数据库
+
+            //模拟数据库
+            F2BooksData f2BooksData = new F2BooksData();
+            f2BooksData.setKnotName(listBean.getName());
+            f2BooksData.setKnotImageUrl(this.listBean.getIcon());
+            f2BooksData.setKnotConnectUrl(listBean.getUrl());
+            f2BooksData.setSize(3);
+            f2BooksData.setApiPage(5);
+            f2BooksData.setApiOrder(0);
+            f2BooksData.setApiTitle(this.listBean.getTitle());
+            f2BooksData.setApiAuthor(this.listBean.getAuthor());
+            f2BooksData.setApiId(this.listBean.getId());
+            f2BooksData.setApiHost(this.listBean.getHost());
+            f2BooksData.setApiToken(this.listBean.getToken());
+           /* f2BooksData.setBookBrightness(800);
+            f2BooksData.setBookFontSize(16);
+            f2BooksData.setBootTheme(3);*/
+
+            intent.putExtra(AppInfo.APP_SA_IS_BOY,is_boy);
+            intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,f2BooksData);
+            startActivity(intent);
+        }
 
     }
+    @Override
+    public void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
+        Intent intent = new Intent(this, CommentsInfoActivity.class);
+        intent.putExtra(AppInfo.APP_SA_USER_INFO, listBean);
+        intent.putExtra(AppInfo.APP_SA_IS_BOY,is_boy);
+        startActivity(intent);
+    }
+
+
+
+
+
+
 
 
 }

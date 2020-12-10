@@ -11,7 +11,8 @@
         android:scaleType="centerCrop"
         android:layout_width="100dp"
         android:layout_height="130dp"
-        app:qmui_corner_radius="6dp"/>
+        app:qmui_corner_radius="6dp"
+        android:transitionName="ui_m_item_tr"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"

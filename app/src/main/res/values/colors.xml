@@ -20,12 +20,17 @@
 
     <color name="black">#FF000000</color>
     <color name="black_A0">#414141</color>
+    <color name="black_title">#595959</color>
     <color name="black_70">#787878</color>
     <color name="black_db">#dbdbdb</color>
     <color name="black_50">#50000000</color>
+    <color name="black_80">#80000000</color>
 
 
 
+    <color name="item_1">#FFD6D6</color>
+    <color name="item_2">#D6FFDD</color>
+    <color name="item_3">#2B2B2B</color>
 
 
 </resources>

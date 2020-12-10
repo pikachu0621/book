@@ -1,12 +1,17 @@
 package com.pikachu.book.home.fragment.one.fragment.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +137,7 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
 
 
     //列表点击事件
+
     @Override
     public void onClick(View v, int position, JsonBookItemCls.ListBean listBean) {
 
@@ -140,7 +146,14 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
         Intent intent = new Intent(activity, BookInfoActivity.class);
         intent.putExtra(AppInfo.APP_SA_BOOK_INFO,listBean);
         intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
-        startActivity(intent);
+        /*Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                Pair.create(v, "image"),
+                Pair.create(v, "name")).toBundle();*/
+        Bundle bundle = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            bundle = ActivityOptions.makeSceneTransitionAnimation(activity, v, "ui_m_item_tr").toBundle();
+        }
+        startActivity(intent,bundle);
 
     }
 }

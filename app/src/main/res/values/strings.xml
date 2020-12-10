@@ -20,4 +20,10 @@
     <string name="app_f2_book">我的书架</string>
     <string name="app_f2_history">历史浏览</string>
     <string name="app_start_read">开始阅读</string>
+    <string name="app_dialog_host_title">无此网站</string>
+    <string name="app_look_jb">洁白</string>
+    <string name="app_look_df">淡粉</string>
+    <string name="app_look_cl">翠绿</string>
+    <string name="app_look_kh">酷黑</string>
+    <string name="app_look_dx">倒序</string>
 </resources>

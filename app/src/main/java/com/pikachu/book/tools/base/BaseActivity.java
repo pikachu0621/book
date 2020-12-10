@@ -43,13 +43,15 @@ public class BaseActivity extends AppCompatActivity {
     private Point point;
 
 
-    @Override
+    /*@Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-    }
+
+
+    }*/
 
     /**
      * toast
