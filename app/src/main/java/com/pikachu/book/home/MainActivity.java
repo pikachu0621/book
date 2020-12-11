@@ -3,21 +3,27 @@ package com.pikachu.book.home;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.pikachu.book.R;
+import com.pikachu.book.cls.DataSynEvent;
 import com.pikachu.book.home.fragment.one.OneRootFragment;
 import com.pikachu.book.home.fragment.three.ThreeRootFragment;
 import com.pikachu.book.home.fragment.tow.TowRootFragment;
 import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.tools.state.PKStatusBarActivity;
 import com.pikachu.book.tools.state.PKStatusBarTools;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 
 
@@ -30,7 +36,7 @@ public class MainActivity extends PKStatusBarActivity {
 
     int[] drawable = {R.drawable.ic_main_one, R.drawable.ic_main_tow, R.drawable.ic_main_three};
     int[] drawable2 = {R.drawable.ic_main_one_1, R.drawable.ic_main_tow_1, R.drawable.ic_main_three_1};
-
+    private TowRootFragment towRootFragment;
 
 
     @Override
@@ -38,11 +44,21 @@ public class MainActivity extends PKStatusBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PKStatusBarTools.with(this).noToNON().init();
+
         initView();
         init();
+
     }
 
+
+
+
+
+
+
+
     private void init() {
+        EventBus.getDefault().register(this);
         addPager();
     }
 
@@ -52,8 +68,9 @@ public class MainActivity extends PKStatusBarActivity {
     private void addPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new OneRootFragment());
-        fragments.add(new TowRootFragment());
-        fragments.add(new ThreeRootFragment());
+        towRootFragment = new TowRootFragment();
+        fragments.add(towRootFragment);
+        fragments.add(new ThreeRootFragment(this));
         mainPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments));
         mainPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int positionUp = 0;
@@ -101,4 +118,25 @@ public class MainActivity extends PKStatusBarActivity {
         findViewById(R.id.main_nar_tow).setOnClickListener(v -> mainPager.setCurrentItem(1));
         findViewById(R.id.main_nar_three).setOnClickListener(v -> mainPager.setCurrentItem(2));
     }
+
+
+
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDataSynEvent(DataSynEvent dataSynEvent) {
+        /*Tools.showToast(this,"触发事件-->"+type);*/
+        /*1为书架 2为历史*/
+        Log.i("test_t","触发事件-->"+dataSynEvent.getType());
+        towRootFragment.refreshList(dataSynEvent.getType());
+    }
+
+
+    public void setPager(int one,int tow){
+        towRootFragment.setPager(tow);
+        mainPager.setCurrentItem(one);
+    }
+
+
 }

@@ -7,7 +7,9 @@ package com.pikachu.book.tools.untli;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,6 +17,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.pikachu.book.cls.json.JsonBookItemCls;
+import com.pikachu.book.cls.sql.F2BooksData;
+
+import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -200,6 +209,20 @@ public class Tools {
         localLayoutParams.screenBrightness = paramInt / (float)getBrightnessMax() ;
         localWindow.setAttributes(localLayoutParams);
     }
+
+
+
+
+
+
+
+    public static void jumpURl(Activity activity,String url){
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.setData(Uri.parse(url));
+        activity.startActivity(intent);
+    }
+
 
 
 }

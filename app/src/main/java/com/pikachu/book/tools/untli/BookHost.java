@@ -306,11 +306,11 @@ public class BookHost {
     private static String noHost(String str){
 
 
-        String str1 = Tools.cutStr(str, "id=\"content\">", "<div");
-        if (str1==null||str1.equals(""))
+        String str1 = Tools.cutStr(str, "content\">", "<div");
+       /* if (str1==null||str1.equals(""))
             str1 =  Tools.cutStr(str, "content\">", "<div");
         if (str1==null||str1.equals(""))
-            str1 =  Tools.cutStr(str, "content\">", "</DIV");
+            str1 =  Tools.cutStr(str, "content\">", "</DIV");*/
 
         return str1;
     }

@@ -130,10 +130,6 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
         load(true);
     }
 
-    @Override
-    protected void onInvisible() {
-
-    }
 
 
     //列表点击事件
@@ -146,13 +142,11 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
         Intent intent = new Intent(activity, BookInfoActivity.class);
         intent.putExtra(AppInfo.APP_SA_BOOK_INFO,listBean);
         intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
-        /*Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                Pair.create(v, "image"),
-                Pair.create(v, "name")).toBundle();*/
         Bundle bundle = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             bundle = ActivityOptions.makeSceneTransitionAnimation(activity, v, "ui_m_item_tr").toBundle();
         }
+        //#8078D4FF(intent,2,bundle);
         startActivity(intent,bundle);
 
     }

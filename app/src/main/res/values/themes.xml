@@ -16,7 +16,7 @@
 
 
     <!--Theme.MaterialComponents.Light.NoActionBar-->
-    <style name="Theme.Book2" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Book2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -37,7 +37,7 @@
     <!--Theme.MaterialComponents.Light.NoActionBar-->
     <style name="pText" parent="Theme.Book">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">#A0000000</item>
     </style>
 

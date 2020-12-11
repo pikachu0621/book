@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -27,17 +28,21 @@ import com.google.android.material.tabs.TabLayout;
 import com.pikachu.book.R;
 import com.pikachu.book.book.info.comments.CommentsInfoActivity;
 import com.pikachu.book.book.info.look.LookBookActivity;
+import com.pikachu.book.cls.DataSynEvent;
 import com.pikachu.book.cls.json.JsonBookChapterCls;
 import com.pikachu.book.cls.json.JsonBookCommentsCls;
 import com.pikachu.book.cls.json.JsonBookItemCls;
 import com.pikachu.book.cls.sql.F2BooksData;
 import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.tools.base.BaseActivity;
+import com.pikachu.book.tools.dao.DaoTools;
 import com.pikachu.book.tools.untli.AppInfo;
 import com.pikachu.book.tools.untli.BookHost;
 import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 import com.pikachu.book.tools.view.ScoreView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +69,8 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
     private F2BooksData f2BooksData;
     private Intent intent;
     private AlertDialog.Builder builder;
+    private DaoTools instance;
+    private int reType = 0 ,reeType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,28 +101,46 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
         setTheme(is_boy, infoAppbar);
         colorW = getResources().getColor(R.color.white);
         colorW5 = getResources().getColor(R.color.white_50);
+
+
         //读取数据库信息
         readSqlBook();
         //头部信息
         setBookInfo();
-        //添加章节。评论
-        addPager();
+
     }
 
     //读取数据库信息
     private void readSqlBook() {
         //判断上次读取的地方/有记录-》设置text4=“继续阅读”
-        f2BooksData = new F2BooksData();
+        //如果历史记录或者收藏记录 者不进行加载信息
 
-
-
+        instance = DaoTools.getInstance(this);
+        List<F2BooksData> f2BooksDatas = instance.inquireBookName(listBean.getTitle());
+        if (f2BooksDatas != null && f2BooksDatas.size() > 0) {
+            f2BooksData = f2BooksDatas.get(0);
+            infoText4.setText("继续阅读");
+            infoImage1.setOnClickListener(v -> {
+                if (intent == null)
+                    intent = new Intent(this, LookBookActivity.class);
+                intent.putExtra(AppInfo.APP_SA_IS_BOY, is_boy);
+                intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO, f2BooksData);
+                startActivity(intent);
+            });
+            // 添加fragment
+            listBean = DaoTools.f2BooksDataToListBean(f2BooksData,listBean);
+            addPagerFragment(listBean);
+        } else {
+            //添加章节。评论
+            addPager();
+        }
 
     }
+
 
     @SuppressLint("SetTextI18n")
     private void setBookInfo() {
         if (listBean != null) {
-
             //AppBar
             infoToolbar.setTitle(listBean.getTitle());
             //infoToolbar.setTitleTextColor(colorW);
@@ -164,9 +189,7 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
 
     private void addPager() {
 
-        infoTab.setTabMode(TabLayout.MODE_FIXED);
-        infoTab.setTabTextColors(colorW5, colorW);
-        infoTab.setSelectedTabIndicatorColor(colorW);
+
         //获取必要的 host token
         new LoadUrl(this, AppInfo.APP_API_BOOK_INFO.replace(AppInfo.APP_RE_STR[0], listBean.getTitle() + " " + listBean.getAuthor()), new LoadUrl.OnCall() {
             @Override
@@ -188,29 +211,36 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
                 listBean.setHost(host);
                 listBean.setToken(token);
 
-
                 // 添加fragment
-                List<Fragment> fragments = new ArrayList<>();
-                List<String> strings = new ArrayList<>();
-                if (str1 != null && !str1.equals("")
-                        && host != null && !host.equals("")
-                        && token != null && !token.equals("")) {
-                    strings.add("章节");
-                    bookChapterFragment = new BookChapterFragment(listBean,true,BookInfoActivity.this);
-                    fragments.add(bookChapterFragment);
-                }
-                strings.add("评论");
-                fragments.add(new BookChapterFragment(listBean,false,BookInfoActivity.this ));
-                infoPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments, strings));
-                infoTab.setupWithViewPager(infoPager);
+                addPagerFragment(listBean);
 
             }
+
         });
     }
 
 
 
+    // 添加fragment
+    private void addPagerFragment(JsonBookItemCls.ListBean listBean) {
 
+        infoTab.setTabMode(TabLayout.MODE_FIXED);
+        infoTab.setTabTextColors(colorW5, colorW);
+        infoTab.setSelectedTabIndicatorColor(colorW);
+        List<Fragment> fragments = new ArrayList<>();
+        List<String> strings = new ArrayList<>();
+        if (listBean.getHost() != null && !listBean.getHost().equals("")
+                && listBean.getTitle() != null && !listBean.getTitle().equals("")) {
+            strings.add("章节");
+            bookChapterFragment = new BookChapterFragment(listBean, true, BookInfoActivity.this);
+            fragments.add(bookChapterFragment);
+        }
+        strings.add("评论");
+        fragments.add(new BookChapterFragment(listBean, false, BookInfoActivity.this));
+        infoPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragments, strings));
+        infoTab.setupWithViewPager(infoPager);
+
+    }
 
 
 
@@ -237,7 +267,7 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
 
         //开始阅读
         if (item.getItemId() == R.id.menu_2) {
-            startRead();
+            startRead(item);
             return true;
         }
 
@@ -251,7 +281,7 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
                 item.setTitle("章节列表到序");
                 bookChapterFragment.setOrder(true);
             }
-            if(infoPager.getCurrentItem() == 1)
+            if (infoPager.getCurrentItem() == 1)
                 infoPager.setCurrentItem(0);
             return true;
         }
@@ -263,31 +293,22 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
         return super.onOptionsItemSelected(item);
     }
 
+
     //开始阅读
-    private void startRead() {
+    private void startRead(MenuItem item) {
         //可以记录上一次的阅读地点
         if (intent == null)
             intent = new Intent(this, LookBookActivity.class);
-        intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,f2BooksData);
+        intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO, f2BooksData);
+        //#8078D4FF(intent,3);
         startActivity(intent);
-
     }
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
     public void onClickChapter(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean) {
 
-        Tools.showToast(this,"ID--->"+ listBean.getId()+"\nNAME"+ listBean.getName()+"\nURL--->"+ listBean.getUrl()+"\nIsHost--->"+ BookHost.isHost(this.listBean.getHost()));
+        Tools.showToast(this, "ID--->" + listBean.getId() + "\nNAME" + listBean.getName() + "\nURL--->" + listBean.getUrl() + "\nIsHost--->" + BookHost.isHost(this.listBean.getHost()));
         Log.i("test_t", listBean.getUrl());
         if (!BookHost.isHost(this.listBean.getHost())) {
 
@@ -299,55 +320,81 @@ public class BookInfoActivity extends BaseActivity implements BookChapterFragmen
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //尝试解析
+                            startLookBook(false,position,listBean);
                         }
                     })
                     .setPositiveButton("浏览器阅读", (dialog, which) -> {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        intent.setData(Uri.parse(listBean.getUrl()));
-                        startActivity(intent);
+                        Tools.jumpURl(BookInfoActivity.this, listBean.getUrl());
                     });
             builder.show();
-        }else {
-            Intent intent = new Intent(this, LookBookActivity.class);
-            //intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,)//数据库
-
-            //模拟数据库
-            F2BooksData f2BooksData = new F2BooksData();
-            f2BooksData.setKnotName(listBean.getName());
-            f2BooksData.setKnotImageUrl(this.listBean.getIcon());
-            f2BooksData.setKnotConnectUrl(listBean.getUrl());
-            f2BooksData.setSize(3);
-            f2BooksData.setApiPage(5);
-            f2BooksData.setApiOrder(0);
-            f2BooksData.setApiTitle(this.listBean.getTitle());
-            f2BooksData.setApiAuthor(this.listBean.getAuthor());
-            f2BooksData.setApiId(this.listBean.getId());
-            f2BooksData.setApiHost(this.listBean.getHost());
-            f2BooksData.setApiToken(this.listBean.getToken());
-           /* f2BooksData.setBookBrightness(800);
-            f2BooksData.setBookFontSize(16);
-            f2BooksData.setBootTheme(3);*/
-
-            intent.putExtra(AppInfo.APP_SA_IS_BOY,is_boy);
-            intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO,f2BooksData);
-            startActivity(intent);
+        } else {
+            startLookBook(true,position,listBean);
         }
 
     }
-    @Override
-    public void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
-        Intent intent = new Intent(this, CommentsInfoActivity.class);
-        intent.putExtra(AppInfo.APP_SA_USER_INFO, listBean);
-        intent.putExtra(AppInfo.APP_SA_IS_BOY,is_boy);
+
+
+
+    /**
+     *  跳转到阅读
+     * @param isOnHos 是否收录host
+     * @param position 第几章
+     * @param listBean list
+     */
+    private void startLookBook(boolean isOnHos, int position,JsonBookChapterCls.DataBean.ChaptersBean listBean ) {
+        if (intent == null)
+            intent = new Intent(this, LookBookActivity.class);
+
+        if (f2BooksData == null)
+            f2BooksData = new F2BooksData();
+        f2BooksData.setKnotName(listBean.getName());
+        f2BooksData.setKnotConnectUrl(listBean.getUrl());
+        f2BooksData.setApiSize(position);
+        f2BooksData.setApiPage(bookChapterFragment.getPage());
+        f2BooksData.setApiOrder(bookChapterFragment.getOrder());
+        f2BooksData = DaoTools.listBeanToF2BooksData(this.listBean, f2BooksData);
+
+        //添加历史
+        instance.addBookHistory(this.f2BooksData);
+        //发布事件   刷新历史
+        EventBus.getDefault().post(new DataSynEvent(2));
+        intent.putExtra(AppInfo.APP_SA_IS_BOY, is_boy);
+        intent.putExtra(AppInfo.APP_SA_BOOK_SQL_INFO, f2BooksData);
+        //#8078D4FF(intent,3);
         startActivity(intent);
     }
 
 
 
 
+    //点击评论item
+    @Override
+    public void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
+        Intent intent = new Intent(this, CommentsInfoActivity.class);
+        intent.putExtra(AppInfo.APP_SA_USER_INFO, listBean);
+        intent.putExtra(AppInfo.APP_SA_IS_BOY, is_boy);
+        startActivity(intent);
+    }
+
+   /* @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (reType == 1 && reeType==1)
+            reType = 3; // 刷新两个
+        else if (reType == 1 && reeType ==0)
+            reType = 1; //刷新书架
+        else if (reType == 0 && reeType == 1)
+            reType = 2; //刷星历史
+        else if (reType == 0 && reeType == 0)
+            reType = -1; //不刷星
+        setResult(reType);
+    }*/
 
 
-
-
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3 && resultCode == 3)
+            reeType = 1;
+    }*/
 }

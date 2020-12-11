@@ -1,4 +1,4 @@
-package com.pikachu.book.cls.sql.dao;
+package com.pikachu.book.tools.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
@@ -28,17 +28,22 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
         public final static Property KnotName = new Property(1, String.class, "knotName", false, "KNOT_NAME");
         public final static Property KnotImageUrl = new Property(2, String.class, "knotImageUrl", false, "KNOT_IMAGE_URL");
         public final static Property KnotConnectUrl = new Property(3, String.class, "knotConnectUrl", false, "KNOT_CONNECT_URL");
-        public final static Property Size = new Property(4, int.class, "size", false, "SIZE");
+        public final static Property ApiSize = new Property(4, int.class, "apiSize", false, "API_SIZE");
         public final static Property ApiPage = new Property(5, int.class, "apiPage", false, "API_PAGE");
         public final static Property ApiOrder = new Property(6, int.class, "apiOrder", false, "API_ORDER");
         public final static Property ApiTitle = new Property(7, String.class, "apiTitle", false, "API_TITLE");
         public final static Property ApiAuthor = new Property(8, String.class, "apiAuthor", false, "API_AUTHOR");
         public final static Property ApiId = new Property(9, String.class, "apiId", false, "API_ID");
-        public final static Property ApiHost = new Property(10, String.class, "apiHost", false, "API_HOST");
-        public final static Property ApiToken = new Property(11, String.class, "apiToken", false, "API_TOKEN");
-        public final static Property BookBrightness = new Property(12, int.class, "bookBrightness", false, "BOOK_BRIGHTNESS");
-        public final static Property BookFontSize = new Property(13, int.class, "bookFontSize", false, "BOOK_FONT_SIZE");
-        public final static Property BootTheme = new Property(14, int.class, "bootTheme", false, "BOOT_THEME");
+        public final static Property ApiReaduv = new Property(10, String.class, "apiReaduv", false, "API_READUV");
+        public final static Property ApiDescription = new Property(11, String.class, "apiDescription", false, "API_DESCRIPTION");
+        public final static Property ApiMarkScore = new Property(12, String.class, "apiMarkScore", false, "API_MARK_SCORE");
+        public final static Property ApiMonthuv = new Property(13, String.class, "apiMonthuv", false, "API_MONTHUV");
+        public final static Property ApiHost = new Property(14, String.class, "apiHost", false, "API_HOST");
+        public final static Property ApiToken = new Property(15, String.class, "apiToken", false, "API_TOKEN");
+        public final static Property BookBrightness = new Property(16, int.class, "bookBrightness", false, "BOOK_BRIGHTNESS");
+        public final static Property BookFontSize = new Property(17, int.class, "bookFontSize", false, "BOOK_FONT_SIZE");
+        public final static Property BootTheme = new Property(18, int.class, "bootTheme", false, "BOOT_THEME");
+        public final static Property BookType = new Property(19, int.class, "bookType", false, "BOOK_TYPE");
     }
 
 
@@ -58,17 +63,22 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
                 "\"KNOT_NAME\" TEXT," + // 1: knotName
                 "\"KNOT_IMAGE_URL\" TEXT," + // 2: knotImageUrl
                 "\"KNOT_CONNECT_URL\" TEXT," + // 3: knotConnectUrl
-                "\"SIZE\" INTEGER NOT NULL ," + // 4: size
+                "\"API_SIZE\" INTEGER NOT NULL ," + // 4: apiSize
                 "\"API_PAGE\" INTEGER NOT NULL ," + // 5: apiPage
                 "\"API_ORDER\" INTEGER NOT NULL ," + // 6: apiOrder
                 "\"API_TITLE\" TEXT," + // 7: apiTitle
                 "\"API_AUTHOR\" TEXT," + // 8: apiAuthor
                 "\"API_ID\" TEXT," + // 9: apiId
-                "\"API_HOST\" TEXT," + // 10: apiHost
-                "\"API_TOKEN\" TEXT," + // 11: apiToken
-                "\"BOOK_BRIGHTNESS\" INTEGER NOT NULL ," + // 12: bookBrightness
-                "\"BOOK_FONT_SIZE\" INTEGER NOT NULL ," + // 13: bookFontSize
-                "\"BOOT_THEME\" INTEGER NOT NULL );"); // 14: bootTheme
+                "\"API_READUV\" TEXT," + // 10: apiReaduv
+                "\"API_DESCRIPTION\" TEXT," + // 11: apiDescription
+                "\"API_MARK_SCORE\" TEXT," + // 12: apiMarkScore
+                "\"API_MONTHUV\" TEXT," + // 13: apiMonthuv
+                "\"API_HOST\" TEXT," + // 14: apiHost
+                "\"API_TOKEN\" TEXT," + // 15: apiToken
+                "\"BOOK_BRIGHTNESS\" INTEGER NOT NULL ," + // 16: bookBrightness
+                "\"BOOK_FONT_SIZE\" INTEGER NOT NULL ," + // 17: bookFontSize
+                "\"BOOT_THEME\" INTEGER NOT NULL ," + // 18: bootTheme
+                "\"BOOK_TYPE\" INTEGER NOT NULL );"); // 19: bookType
     }
 
     /** Drops the underlying database table. */
@@ -100,7 +110,7 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
         if (knotConnectUrl != null) {
             stmt.bindString(4, knotConnectUrl);
         }
-        stmt.bindLong(5, entity.getSize());
+        stmt.bindLong(5, entity.getApiSize());
         stmt.bindLong(6, entity.getApiPage());
         stmt.bindLong(7, entity.getApiOrder());
  
@@ -119,18 +129,39 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
             stmt.bindString(10, apiId);
         }
  
+        String apiReaduv = entity.getApiReaduv();
+        if (apiReaduv != null) {
+            stmt.bindString(11, apiReaduv);
+        }
+ 
+        String apiDescription = entity.getApiDescription();
+        if (apiDescription != null) {
+            stmt.bindString(12, apiDescription);
+        }
+ 
+        String apiMarkScore = entity.getApiMarkScore();
+        if (apiMarkScore != null) {
+            stmt.bindString(13, apiMarkScore);
+        }
+ 
+        String apiMonthuv = entity.getApiMonthuv();
+        if (apiMonthuv != null) {
+            stmt.bindString(14, apiMonthuv);
+        }
+ 
         String apiHost = entity.getApiHost();
         if (apiHost != null) {
-            stmt.bindString(11, apiHost);
+            stmt.bindString(15, apiHost);
         }
  
         String apiToken = entity.getApiToken();
         if (apiToken != null) {
-            stmt.bindString(12, apiToken);
+            stmt.bindString(16, apiToken);
         }
-        stmt.bindLong(13, entity.getBookBrightness());
-        stmt.bindLong(14, entity.getBookFontSize());
-        stmt.bindLong(15, entity.getBootTheme());
+        stmt.bindLong(17, entity.getBookBrightness());
+        stmt.bindLong(18, entity.getBookFontSize());
+        stmt.bindLong(19, entity.getBootTheme());
+        stmt.bindLong(20, entity.getBookType());
     }
 
     @Override
@@ -156,7 +187,7 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
         if (knotConnectUrl != null) {
             stmt.bindString(4, knotConnectUrl);
         }
-        stmt.bindLong(5, entity.getSize());
+        stmt.bindLong(5, entity.getApiSize());
         stmt.bindLong(6, entity.getApiPage());
         stmt.bindLong(7, entity.getApiOrder());
  
@@ -175,18 +206,39 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
             stmt.bindString(10, apiId);
         }
  
+        String apiReaduv = entity.getApiReaduv();
+        if (apiReaduv != null) {
+            stmt.bindString(11, apiReaduv);
+        }
+ 
+        String apiDescription = entity.getApiDescription();
+        if (apiDescription != null) {
+            stmt.bindString(12, apiDescription);
+        }
+ 
+        String apiMarkScore = entity.getApiMarkScore();
+        if (apiMarkScore != null) {
+            stmt.bindString(13, apiMarkScore);
+        }
+ 
+        String apiMonthuv = entity.getApiMonthuv();
+        if (apiMonthuv != null) {
+            stmt.bindString(14, apiMonthuv);
+        }
+ 
         String apiHost = entity.getApiHost();
         if (apiHost != null) {
-            stmt.bindString(11, apiHost);
+            stmt.bindString(15, apiHost);
         }
  
         String apiToken = entity.getApiToken();
         if (apiToken != null) {
-            stmt.bindString(12, apiToken);
+            stmt.bindString(16, apiToken);
         }
-        stmt.bindLong(13, entity.getBookBrightness());
-        stmt.bindLong(14, entity.getBookFontSize());
-        stmt.bindLong(15, entity.getBootTheme());
+        stmt.bindLong(17, entity.getBookBrightness());
+        stmt.bindLong(18, entity.getBookFontSize());
+        stmt.bindLong(19, entity.getBootTheme());
+        stmt.bindLong(20, entity.getBookType());
     }
 
     @Override
@@ -201,17 +253,22 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // knotName
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // knotImageUrl
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // knotConnectUrl
-            cursor.getInt(offset + 4), // size
+            cursor.getInt(offset + 4), // apiSize
             cursor.getInt(offset + 5), // apiPage
             cursor.getInt(offset + 6), // apiOrder
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // apiTitle
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // apiAuthor
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // apiId
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // apiHost
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // apiToken
-            cursor.getInt(offset + 12), // bookBrightness
-            cursor.getInt(offset + 13), // bookFontSize
-            cursor.getInt(offset + 14) // bootTheme
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // apiReaduv
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // apiDescription
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // apiMarkScore
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // apiMonthuv
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // apiHost
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // apiToken
+            cursor.getInt(offset + 16), // bookBrightness
+            cursor.getInt(offset + 17), // bookFontSize
+            cursor.getInt(offset + 18), // bootTheme
+            cursor.getInt(offset + 19) // bookType
         );
         return entity;
     }
@@ -222,17 +279,22 @@ public class F2BooksDataDao extends AbstractDao<F2BooksData, Long> {
         entity.setKnotName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setKnotImageUrl(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setKnotConnectUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setSize(cursor.getInt(offset + 4));
+        entity.setApiSize(cursor.getInt(offset + 4));
         entity.setApiPage(cursor.getInt(offset + 5));
         entity.setApiOrder(cursor.getInt(offset + 6));
         entity.setApiTitle(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setApiAuthor(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setApiId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setApiHost(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setApiToken(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setBookBrightness(cursor.getInt(offset + 12));
-        entity.setBookFontSize(cursor.getInt(offset + 13));
-        entity.setBootTheme(cursor.getInt(offset + 14));
+        entity.setApiReaduv(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setApiDescription(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setApiMarkScore(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setApiMonthuv(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setApiHost(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setApiToken(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setBookBrightness(cursor.getInt(offset + 16));
+        entity.setBookFontSize(cursor.getInt(offset + 17));
+        entity.setBootTheme(cursor.getInt(offset + 18));
+        entity.setBookType(cursor.getInt(offset + 19));
      }
     
     @Override

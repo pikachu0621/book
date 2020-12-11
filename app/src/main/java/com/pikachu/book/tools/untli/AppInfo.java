@@ -9,11 +9,8 @@ public class AppInfo {
 
 
 
-
-
-
-
-
+    ///////数据库name/////
+    public static final String APP_SQL_NAME = "MMP.db"; // 数据库
 
 
     /////// 界面跳转 ////
@@ -42,9 +39,10 @@ public class AppInfo {
     public static final String[] APP_JS_INFO_STR = {"introUrl\":\""/*0*/,"\""/*1*/,"&host="/*2*/,"&"/*3*/,"&token="/*4*/,"&title="/*5*/,"&novelid="/*6*/};
 
     //章节列表
-    public static final String APP_API_BOOK_CH = "https://m.sm.cn/api/rest?format=json&order={order}&callback=jsonp{page}&method=novelintro.menu&q={title}&author={author}&novelid={novelid}&host={host}&token={token}&page={page}";
     //https://quark.sm.cn/api/rest?
     //https://m.sm.cn/api/rest?
+    public static final String APP_API_BOOK_CH = "https://m.sm.cn/api/rest?format=json&order={order}&callback=jsonp{page}&method=novelintro.menu&q={title}&author={author}&novelid={novelid}&host={host}&token={token}&page={page}";
+
 
 
 

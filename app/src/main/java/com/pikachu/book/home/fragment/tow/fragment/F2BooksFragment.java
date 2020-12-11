@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.pikachu.book.R;
 import com.pikachu.book.cls.sql.F2BooksData;
 import com.pikachu.book.tools.base.BaseFragment;
+import com.pikachu.book.tools.dao.DaoTools;
 import com.pikachu.book.tools.untli.Tools;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -21,23 +23,27 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class F2BooksFragment extends BaseFragment {
 
 
     private final boolean isBooks;
+    private final F2BooksRecyclerAdapter.OnClickItemListener onClickItemListener;
     private View inflate;
     private FragmentActivity activity;
     private RecyclerView recyclerView;
     private F2BooksRecyclerAdapter f2BooksRecyclerAdapter;
     private SmartRefreshLayout refreshLayout;
+    private LinearLayout lin1;
+    private DaoTools instance;
 
-    public F2BooksFragment(boolean isBooks) {
+
+    public F2BooksFragment(boolean isBooks, F2BooksRecyclerAdapter.OnClickItemListener onClickItemListener) {
         this.isBooks = isBooks;
+        this.onClickItemListener = onClickItemListener;
     }
-
-
 
 
     @Override
@@ -46,6 +52,7 @@ public class F2BooksFragment extends BaseFragment {
         activity = getActivity();
         recyclerView = inflate.findViewById(R.id.tab_recycler);
         refreshLayout = inflate.findViewById(R.id.tab_refreshLayout);
+        lin1 = inflate.findViewById(R.id.tab_lin1);
         init();
         return inflate;
     }
@@ -63,76 +70,53 @@ public class F2BooksFragment extends BaseFragment {
         refreshLayout.setEnableAutoLoadMore(true);//是否启用列表惯性滑动到底部时自动加载更多
         refreshLayout.setOnRefreshListener(refreshlayout -> loadData());
         refreshLayout.setEnableLoadMore(false);//是否启用上拉加载功能
+
+        instance = DaoTools.getInstance(activity);
     }
 
-
-
-
-
-    private void loadData(){
-
-
+    private void loadData() {
         new Thread(() -> {
 
-            //模拟延迟
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //加载数据
 
-            //模拟加载数据
-            ArrayList<F2BooksData> f2BooksData = new ArrayList<>();
-            for (int i = 0;i<(isBooks?20:50);i++){
-                F2BooksData f2BooksData1 = new F2BooksData();
-                f2BooksData1.setKnotName("第一章 蟒雀吞龙");
-                f2BooksData1.setKnotImageUrl("https://ims-cdn0.sm.cn/ims?kt=url&at=novel&key=aHR0cHM6Ly9ndy5hbGljZG4uY29tL0wxLzcyMy8xNTA1Mjk1MzA3LzQ4LzVjLzUwLzQ4NWM1MGZhYmY0YzEzNmY5ZGRkYzMwOWUxMjJlZmUzLmpwZw==&sign=yx:mhfWIS-vhd_C2wcePuiowWM5WOA=&tv=320_320&x.jpg");
-                f2BooksData1.setApiTitle("元尊-"+i);
-                f2BooksData.add(f2BooksData1);
-            }
-
-
-
-
+            List<F2BooksData> f2BooksData;
+            if (isBooks)
+                f2BooksData = instance.inquireBookFrame();
+            else
+                f2BooksData = instance.inquireBookHistory();
 
             activity.runOnUiThread(() -> {
+                if (f2BooksData == null || f2BooksData.size() <= 0) {
+                    lin1.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    refreshLayout.finishRefresh(true);//结束刷新（刷新成功）
+                    return;
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    lin1.setVisibility(View.GONE);
+                }
 
-                if (f2BooksRecyclerAdapter==null){
-                    f2BooksRecyclerAdapter = new F2BooksRecyclerAdapter(activity, isBooks, f2BooksData, (v, position, f2BooksData1) -> Tools.showToast(activity,"点击列表-->"+position));
+
+                if (f2BooksRecyclerAdapter == null) {
+                    f2BooksRecyclerAdapter = new F2BooksRecyclerAdapter(activity, isBooks, f2BooksData, onClickItemListener);
                     recyclerView.setAdapter(f2BooksRecyclerAdapter);
-                    recyclerView.setLayoutManager(new GridLayoutManager(activity,isBooks?3:4));
-                }else {
+                    recyclerView.setLayoutManager(new GridLayoutManager(activity, isBooks ? 3 : 4));
+                } else {
                     f2BooksRecyclerAdapter.refreshData(f2BooksData);
                     f2BooksRecyclerAdapter.notifyDataSetChanged();
                 }
-                refreshLayout.finishRefresh(true);//结束刷新（刷新成功）
 
+                refreshLayout.finishRefresh(true);//结束刷新（刷新成功）
             });
 
         }).start();
 
 
-
-
-
-
     }
-
-
-
-
 
     //用于刷新列表
-    public void refreshList(){
+    public void refreshList() {
         loadData();
-    }
-
-
-    
-
-    @Override
-    protected void onInvisible() {
-
     }
 
 

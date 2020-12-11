@@ -29,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
             lazyLoad();
         } else {
             isVisible = false;
-            onInvisible();
+            /*onInvisible();*/
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 不可见时调用
      */
-    protected abstract void onInvisible();
+    /*protected abstract void onInvisible();*/
 
 
 

@@ -8,6 +8,9 @@
  * 不足
  * 章节列表要能上加载和下加载 （这里没实现）
  * 小说也是 （能上下加载）
+ *
+ * 重新写适配器
+ *
  */
 
 package com.pikachu.book.book.info.look;
@@ -37,14 +40,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.pikachu.book.R;
 import com.pikachu.book.book.info.BookChapterFragment;
-import com.pikachu.book.book.info.BookInfoActivity;
+import com.pikachu.book.cls.DataSynEvent;
 import com.pikachu.book.cls.ThemeInfo;
 import com.pikachu.book.cls.json.JsonBookChapterCls;
 import com.pikachu.book.cls.json.JsonBookCommentsCls;
-import com.pikachu.book.cls.json.JsonBookItemCls;
 import com.pikachu.book.cls.sql.F2BooksData;
-import com.pikachu.book.home.fragment.tow.fragment.F2BooksFragment;
 import com.pikachu.book.tools.base.BaseActivity;
+import com.pikachu.book.tools.dao.DaoTools;
 import com.pikachu.book.tools.state.PKStatusBarTools;
 import com.pikachu.book.tools.untli.AppInfo;
 import com.pikachu.book.tools.untli.BookHost;
@@ -52,6 +54,8 @@ import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 import com.pikachu.book.tools.view.QMUIRadiusImageView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +103,7 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
             new ThemeInfo(0xff2B2B2B, 0xA0FFFFFF, 0x10FFFFFF, 0xFFFFFFFF, 0x80FFFFFF, 0x80FFFFFF, 0xFFFFFFFF, 0xc0FFFFFF),
     };
     private LookBookRecyclerAdapter lookBookRecyclerAdapter;
+    private DaoTools instance;
 
 
     @Override
@@ -108,7 +113,6 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
         PKStatusBarTools.with(this).noToNON().init();
         initView();
         init();
-
     }
 
 
@@ -122,6 +126,7 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
         Tools.setNonHigh(this, lookView);
         Tools.setNonHigh(this, lookView1);
         setHead(true, null, null, this::finish);
+        instance = DaoTools.getInstance(this);
         //加载小说内容
         loadContent();
         //打开菜单
@@ -134,7 +139,7 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
         loadList();
         //倒序
         loadDao();
-        //菜单长按呼出
+        //菜单呼出
         change();
     }
 
@@ -146,6 +151,18 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
             if (event.getAction() == MotionEvent.ACTION_DOWN)
                  setAnimator2(lookLin11,lookDibu,lookLin11.getVisibility() == View.GONE);
             return false;
+        });
+
+        lookLin4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("添加成功");
+                instance.addBookFrame(bookInfo);
+                //发布事件   刷新书架
+                EventBus.getDefault().post(new DataSynEvent(1));
+                EventBus.getDefault().post(new DataSynEvent(2));
+
+            }
         });
 
 
@@ -268,6 +285,7 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
     }
 
 
+    //实力控件
     private void initView() {
         lookRecycler = findViewById(R.id.look_recycler);
 
@@ -536,8 +554,8 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
                 lookSeekBar2.setProgress(progress);
                 lookBookRecyclerAdapter.setTextSize(progress+10);
             }
-
         });
+
 
 
 
@@ -552,10 +570,13 @@ public class LookBookActivity extends BaseActivity implements BookChapterFragmen
     //列表点击
     @Override
     public void onClickChapter(View v, int position, JsonBookChapterCls.DataBean.ChaptersBean listBean) {
-
     }
 
+
+
+    //不用
     @Override
-    public void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) {
-    }
+    public void onClickComment(View v, int position, JsonBookCommentsCls.DataBean.ListBean listBean) { }
+
+
 }

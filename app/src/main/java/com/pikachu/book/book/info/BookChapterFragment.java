@@ -1,9 +1,5 @@
 package com.pikachu.book.book.info;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.pikachu.book.R;
-import com.pikachu.book.book.info.comments.CommentsInfoActivity;
-import com.pikachu.book.book.info.look.LookBookActivity;
 import com.pikachu.book.cls.json.JsonBookChapterCls;
 import com.pikachu.book.cls.json.JsonBookCommentsCls;
 import com.pikachu.book.cls.json.JsonBookItemCls;
 import com.pikachu.book.cls.sql.F2BooksData;
 import com.pikachu.book.tools.base.BaseFragment;
 import com.pikachu.book.tools.untli.AppInfo;
-import com.pikachu.book.tools.untli.BookHost;
 import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -55,14 +48,14 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     public BookChapterFragment(JsonBookItemCls.ListBean listBean, boolean isBookChapter, OnClickFragment onClickFragment) {
         /* this.listBean = listBean;*/
         initVar(listBean.getTitle(), listBean.getAuthor(), listBean.getId(), listBean.getHost(), listBean.getToken(),
-                0, 0, 0
+                1, 0, 0
                 , onClickFragment, isBookChapter);
     }
 
 
     public BookChapterFragment(F2BooksData f2BooksData, boolean isBookChapter, OnClickFragment onClickFragment) {
         initVar(f2BooksData.getApiTitle(), f2BooksData.getApiAuthor(), f2BooksData.getApiId(), f2BooksData.getApiHost(), f2BooksData.getApiToken(),
-                f2BooksData.getApiOrder(), f2BooksData.getSize(), f2BooksData.getApiPage(),
+                f2BooksData.getApiOrder(), f2BooksData.getApiSize(), f2BooksData.getApiPage(),
                 onClickFragment, isBookChapter);
 
 
@@ -308,10 +301,6 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     }
 
 
-    @Override
-    protected void onInvisible() {
-    }
-
 
     //获取倒序或者正序
     public boolean isPositiveOrder() {
@@ -330,6 +319,14 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
         }
     }
 
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getOrder() {
+        return order;
+    }
 
     public void setPage(int page) {
         this.page = page;

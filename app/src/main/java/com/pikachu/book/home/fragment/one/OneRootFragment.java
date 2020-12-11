@@ -17,6 +17,7 @@ import com.pikachu.book.book.search.SearchActivity;
 import com.pikachu.book.tools.adapter.PagerAdapter;
 import com.pikachu.book.cls.json.JsonTabCls;
 import com.pikachu.book.home.fragment.one.fragment.BoyAndGirlFragment;
+import com.pikachu.book.tools.base.BaseFragment;
 import com.pikachu.book.tools.untli.AppInfo;
 import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
@@ -24,7 +25,7 @@ import com.pikachu.book.tools.url.LoadUrl;
 import java.util.ArrayList;
 
 
-public class OneRootFragment extends Fragment {
+public class OneRootFragment extends BaseFragment {
 
     private View inflate;
     private FragmentActivity activity;
@@ -42,8 +43,7 @@ public class OneRootFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         inflate = inflater.inflate(R.layout.fragment_h_root1, container, false);
         activity = getActivity();
@@ -52,34 +52,8 @@ public class OneRootFragment extends Fragment {
         return inflate;
     }
 
-
-    private void findView() {
-        text1 = inflate.findViewById(R.id.pager_main_one_text1);
-        text2 = inflate.findViewById(R.id.pager_main_one_text2);
-        text3 = inflate.findViewById(R.id.pager_main_one_text3);
-        viewNon = inflate.findViewById(R.id.pager_non);
-        pager = inflate.findViewById(R.id.pager_main_one_pager);
-    }
-
-
-    private void init() {
-
-
-        //设置一个占位view 用于占位状态栏
-        Tools.setNonHigh(activity,viewNon);
-
-        color1 = getResources().getColor(R.color.white);
-        color2 = getResources().getColor(R.color.white_50);
-
-
-        text3.setOnClickListener(v -> {
-
-            Intent intent = new Intent(activity, SearchActivity.class);
-            intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
-            startActivity(intent);
-        });
-
-
+    @Override
+    protected void initData() {
         //加载Tab
         new LoadUrl(activity, AppInfo.APP_API_BOOK_TAB_LIST,new LoadUrl.OnCall() {
             @Override
@@ -131,6 +105,32 @@ public class OneRootFragment extends Fragment {
             }
         });
 
+    }
+
+
+
+    private void findView() {
+        text1 = inflate.findViewById(R.id.pager_main_one_text1);
+        text2 = inflate.findViewById(R.id.pager_main_one_text2);
+        text3 = inflate.findViewById(R.id.pager_main_one_text3);
+        viewNon = inflate.findViewById(R.id.pager_non);
+        pager = inflate.findViewById(R.id.pager_main_one_pager);
+    }
+
+
+    private void init() {
+
+        //设置一个占位view 用于占位状态栏
+        Tools.setNonHigh(activity,viewNon);
+
+        color1 = getResources().getColor(R.color.white);
+        color2 = getResources().getColor(R.color.white_50);
+
+        text3.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, SearchActivity.class);
+            intent.putExtra(AppInfo.APP_SA_IS_BOY,isBoy);
+            startActivity(intent);
+        });
 
     }
 
