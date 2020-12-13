@@ -211,11 +211,11 @@ public class Tools {
     }
 
 
-
-
-
-
-
+    /**
+     * 设置跳转浏览器
+     * @param activity
+     * @param url
+     */
     public static void jumpURl(Activity activity,String url){
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
