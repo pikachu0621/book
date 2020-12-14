@@ -8,6 +8,7 @@ import java.util.List;
 
 
 public class JsonBookItemCls {
+
     public Integer getStatus() {
         return status;
     }
