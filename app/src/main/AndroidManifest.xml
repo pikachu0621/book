@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Book"
         tools:targetApi="n">
-        <activity android:name=".home.fragment.three.activity.UserInfoActivity"></activity>
+        <activity android:name=".home.fragment.three.activity.UserInfoActivity"/>
         <activity
             android:name=".book.info.look.LookBookActivity"
             android:theme="@style/Theme.Book2" />
