@@ -2,7 +2,7 @@
 ==============
 Android 小说类软件，毕业设计，无其他用途
 <br>
-*by：Pikachu_WeChat
+by：Pikachu_WeChat
 
 效果图
 ==============
