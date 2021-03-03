@@ -18,8 +18,8 @@ Android 小说类软件，毕业设计，无其他用途、
 
 下载apk
 ---
->[Github-下载](/app/release/app-release.apk)
->[国内下载](https://wwa.lanzous.com/ik8wAjjwoji)
+> [Github-下载](/app/release/app-release.apk)
+> [国内下载](https://wwa.lanzous.com/ik8wAjjwoji)
 
 
 效果图
