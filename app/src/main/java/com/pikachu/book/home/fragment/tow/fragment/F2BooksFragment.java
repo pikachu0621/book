@@ -29,8 +29,8 @@ import java.util.List;
 public class F2BooksFragment extends BaseFragment {
 
 
-    private final boolean isBooks;
-    private final F2BooksRecyclerAdapter.OnClickItemListener onClickItemListener;
+    private boolean isBooks;
+    private F2BooksRecyclerAdapter.OnClickItemListener onClickItemListener;
     private View inflate;
     private FragmentActivity activity;
     private RecyclerView recyclerView;
@@ -39,6 +39,8 @@ public class F2BooksFragment extends BaseFragment {
     private LinearLayout lin1;
     private DaoTools instance;
 
+
+    public F2BooksFragment(){}
 
     public F2BooksFragment(boolean isBooks, F2BooksRecyclerAdapter.OnClickItemListener onClickItemListener) {
         this.isBooks = isBooks;

@@ -31,8 +31,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClickItemListener {
 
 
-    private final String type;
-    private final boolean isBoy;
+    private String type;
+    private boolean isBoy;
     private View inflate;
     private FragmentActivity activity;
     private RecyclerView recyclerView;
@@ -40,6 +40,10 @@ public class TabFragment extends BaseFragment  implements RecyclerAdapter.OnClic
     private RefreshLayout refreshLayout;
     private RecyclerAdapter recyclerAdapter;
     private boolean isOneData = true;
+
+
+    public TabFragment() {
+    }
 
     public TabFragment(String type, boolean isBoy) {
         this.type = type;

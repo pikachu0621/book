@@ -18,7 +18,7 @@ Android 小说类软件，毕业设计，无其他用途、
 
 下载apk
 ---
->[Github-下载](/app/release/app-release.apk)
+>[Github-下载](app/release/app-release.apk)
 >[国内下载](https://wwa.lanzous.com/ik8wAjjwoji)
 
 
@@ -26,7 +26,7 @@ Android 小说类软件，毕业设计，无其他用途、
 ==============
 |首页|书架|我的|阅读界面|
 |:---:|:---:|:---:|:---:|
-| ![](/image/1.jpg) | ![](/image/2.jpg) | ![](/image/3.jpg) | ![](/image/4.jpg) |
+| ![](image/1.jpg) | ![](image/2.jpg) | ![](image/3.jpg) | ![](image/4.jpg) |
 
 
 By: Pikachu_WeChat

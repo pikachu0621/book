@@ -45,6 +45,10 @@ public class BookChapterFragment extends BaseFragment implements BookChapterRecy
     private int order, size, page;//倒序  1正序
     private boolean isOne = true;
 
+
+    public BookChapterFragment() {
+    }
+
     public BookChapterFragment(JsonBookItemCls.ListBean listBean, boolean isBookChapter, OnClickFragment onClickFragment) {
         /* this.listBean = listBean;*/
         initVar(listBean.getTitle(), listBean.getAuthor(), listBean.getId(), listBean.getHost(), listBean.getToken(),

@@ -23,6 +23,7 @@ import com.pikachu.book.tools.untli.Tools;
 import com.pikachu.book.tools.url.LoadUrl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class OneRootFragment extends BaseFragment {
@@ -70,8 +71,8 @@ public class OneRootFragment extends BaseFragment {
 
                 //添加  男女  分类 ViewPager
                 fragments = new ArrayList<>();
-                fragments.add(new BoyAndGirlFragment(jsonTabCls.getBoy(),true)); // 男
-                fragments.add(new BoyAndGirlFragment(jsonTabCls.getGirl(),false)); // 女
+                fragments.add(BoyAndGirlFragment.newInstance(jsonTabCls.getBoy(),true)); // 男
+                fragments.add(BoyAndGirlFragment.newInstance(jsonTabCls.getGirl(),false)); // 女
 
                 //添加适配器
                 assert getFragmentManager() != null;

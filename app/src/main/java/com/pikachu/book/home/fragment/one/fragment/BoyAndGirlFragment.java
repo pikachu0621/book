@@ -23,14 +23,33 @@ import java.util.List;
 
 public class BoyAndGirlFragment extends Fragment {
 
-    private final boolean isBoy;
-    private final List<JsonTabCls.Bean> beans;
+    private boolean isBoy;
+    private List<JsonTabCls.Bean> beans;
     private View inflate;
     private LinearLayout lin;
     private TabLayout tab;
     private ViewPager pager;
     private FragmentActivity activity;
     private View view;
+
+
+
+
+    public static  BoyAndGirlFragment newInstance(List<JsonTabCls.Bean> beans, boolean isBoy) {
+        /* Bundle args = new Bundle();
+        args.put(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        */
+        return new  BoyAndGirlFragment(beans ,  isBoy);
+    }
+
+
+    public BoyAndGirlFragment() {
+
+    }
+
+
 
     public BoyAndGirlFragment(List<JsonTabCls.Bean> beans, boolean isBoy) {
         this.isBoy = isBoy;

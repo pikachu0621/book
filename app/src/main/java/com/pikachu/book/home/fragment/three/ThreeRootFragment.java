@@ -19,7 +19,7 @@ import com.pikachu.book.tools.untli.AppInfo;
 
 public class ThreeRootFragment extends BaseFragment {
 
-    private final MainActivity mainActivity;
+    private MainActivity mainActivity;
     private View inflate;
     private FragmentActivity activity;
     private TextView mainF3Text1;
@@ -28,6 +28,12 @@ public class ThreeRootFragment extends BaseFragment {
     private LinearLayout mainF3Lin2;
     private LinearLayout mainF3Lin3;
     private LinearLayout mainF3Lin4;
+
+
+    public ThreeRootFragment() {
+
+    }
+
 
     public ThreeRootFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
